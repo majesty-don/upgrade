@@ -152,6 +152,7 @@
 	  	<property name="mapperLocations">
 	  		<list>
 	  			<value>classpath:/upgrade/mapper/DBMonitorMapper.xml</value>
+	  			<value>classpath:/upgrade/mapper/FileCountMapper.xml</value>
 	  		</list>
 	  	</property>
 	</bean>

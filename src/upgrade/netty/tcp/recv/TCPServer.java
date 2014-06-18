@@ -6,7 +6,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import upgrade.netty.IServer;
 
-public class ServerTCP {
+public class TCPServer {
 
 	/**
 	 * @param args
@@ -15,7 +15,7 @@ public class ServerTCP {
 	public static void main(String[] args) throws InterruptedException {
 		PropertyConfigurator.configure("E:/MyProject/Eclipse/upgrade/src/log4j.xml");
 		ConfigurableApplicationContext context = new ClassPathXmlApplicationContext("spring-context.xml");
-		IServer server=(IServer) context.getBean("receive");
+		IServer server=(IServer) context.getBean("tcpreceive");
 		try {
 			server.run();
 		} catch (Exception e) {

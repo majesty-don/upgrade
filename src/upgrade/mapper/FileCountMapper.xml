@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="upgrade.dao.FileCountMapper" >
+
+  <resultMap id="FileCountMap" type="upgrade.pojo.FileCount" >
+    <result column="cityname" property="cityname" jdbcType="VARCHAR" />
+    <result column="appname" property="appname" jdbcType="VARCHAR" />
+    <result column="datetime" property="datetime" jdbcType="DATE" />
+    <result column="filecount" property="filecount" jdbcType="NUMERIC" />
+    <result column="filemaxcount" property="filemaxcount" jdbcType="NUMERIC" />
+  </resultMap>
+  
+  <sql id="File_Count_Column_List" >
+    cityname,appname,datetime,filecount,filemaxcount 
+  </sql>
+  
+  <select id="findAll" resultMap="FileCountMap"  >
+    select 
+    <include refid="File_Column_List" />
+    from MONIT_CITYFILE_COUNT
+  </select>
+  
+  <select id="findNameAndMax" resultMap="FileCountMap"  >
+    select citname,filemaxcount
+    from MONIT_CITYFILE_COUNT
+  </select>
+  
+  <insert id="insert" parameterType="upgrade.pojo.FileCount" >
+    insert into MONIT_CITYFILE_COUNT
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="filename != null" >
+        filename,
+      </if>
+      <if test="appname != null" >
+        appname,
+      </if>
+      <if test="datetimme != null" >
+        datetime,
+      </if>
+      <if test="filecount != null" >
+        filecount,
+      </if>
+      <if test="filemaxcount != null" >
+        filemaxcount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cityname != null" >
+        #{cityname,jdbcType=VARCHAR},
+      </if>
+      <if test="appname != null" >
+        #{appname,jdbcType=VARCHAR},
+      </if>
+      <if test="datetime != null" >
+        #{datetime,jdbcType=VARCHAR},
+      </if>
+      <if test="filecount != null" >
+        #{filecount,jdbcType=NUMERIC},
+      </if>
+      <if test="filemaxcount != null" >
+        #{filemaxcount,jdbcType=NUMERIC},
+      </if>
+    </trim>
+  </insert>
+  
+   <delete id="delete" parameterType="java.lang.Long" >
+    delete from MONIT_CITYFILE_COUNT
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteList" parameterType="java.util.List"> 
+       <![CDATA[ 
+           delete from MONIT_CITYFILE_COUNT where id in 
+       ]]> 
+       <foreach collection="list" item="ids"  open="(" separator="," close=")">   
+           #{ids}  
+       </foreach> 
+   </delete> 
+  
+</mapper>

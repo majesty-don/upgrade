@@ -16,9 +16,9 @@ import io.netty.channel.FileRegion;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 @Component("sendRegionHandler")
-public class SendHandler extends SimpleChannelInboundHandler<String> {
+public class RegionSendHandler extends SimpleChannelInboundHandler<String> {
 
-	private static final Logger logger = LogManager.getLogger(SendHandler.class);
+	private static final Logger logger = LogManager.getLogger(RegionSendHandler.class);
 	
 	private final String filename = "c3p0-service.xml";
 	private long length=0L;

@@ -4,18 +4,16 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
-import upgrade.netty.region.send.SendHandler;
-
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.logging.LoggingHandler;
 
-@Component("sendInitializer")
-public class SendInitializer extends ChannelInitializer<Channel> {
+@Component("sendTcpInitializer")
+public class TCPSendInitializer extends ChannelInitializer<Channel> {
 
-	@Resource(name="sendHandler")
-	private SendHandler sendHandler;
+	@Resource(name="sendTcpHandler")
+	private TCPSendHandler sendHandler;
 	
 	@Override
 	protected void initChannel(Channel ch) throws Exception {

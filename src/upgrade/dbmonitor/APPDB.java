@@ -10,8 +10,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
-public class APP {
-	private static final Logger logger = LogManager.getLogger(APP.class);
+public class APPDB {
+	private static final Logger logger = LogManager.getLogger(APPDB.class);
 	public static void main(String[] args) throws InterruptedException { 
 		PropertyConfigurator.configure("E:/MyProject/Eclipse/upgrade/src/log4j.xml");
 		ConfigurableApplicationContext context = new ClassPathXmlApplicationContext("spring-context.xml");

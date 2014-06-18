@@ -26,10 +26,10 @@ import io.netty.util.CharsetUtil;
  * Be aware that sub-classes of ByteToMessageCodec MUST NOT annotated with @Sharable.
  */
 
-@Component("receiveHandler")
-public class ReceiveHandler extends ByteToMessageCodec<String> {
+@Component("receiveTcpHandler")
+public class TCPReceiveHandler extends ByteToMessageCodec<String> {
 
-	private static final Logger logger = LogManager.getLogger(ReceiveHandler.class);
+	private static final Logger logger = LogManager.getLogger(TCPReceiveHandler.class);
 	
 	private static enum Block {
 		INFO, DATA;

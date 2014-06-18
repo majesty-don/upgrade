@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="upgrade.dao.CityMapper" >
+
+  <resultMap id="CityMap" type="upgrade.pojo.City" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="remote" property="remote" jdbcType="VARCHAR" />
+    <result column="port22" property="port22" jdbcType="BIGINT" />
+    <result column="port10" property="port10" jdbcType="BIGINT" />
+    <result column="port15" property="port15" jdbcType="BIGINT" />
+    <result column="port16" property="port16" jdbcType="BIGINT" />
+    <result column="port17" property="port17" jdbcType="BIGINT" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="City_Column_List" >
+    id,name,remote,port22,port10,port15,port16,port17,username,password 
+  </sql>
+  
+  <select id="findAll" resultMap="CityMap"  >
+    select 
+    <include refid="City_Column_List" />
+    from City
+  </select>
+  
+  <select id="find" resultMap="CityMap"  parameterType="java.lang.Long">
+    select 
+    <include refid="City_Column_List" />
+    from City
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <insert id="add" parameterType="upgrade.pojo.City">
+  	insert into city(name,remote,port22,port10,port15,port16,port17,username,password)
+  	values(
+  		#{name,jdbcType=VARCHAR},
+  		#{remote,jdbcType=VARCHAR},
+  		#{port22,jdbcType=BIGINT},
+  		#{port10,jdbcType=BIGINT},
+  		#{port15,jdbcType=BIGINT},
+  		#{port16,jdbcType=BIGINT},
+  		#{port17,jdbcType=BIGINT},
+  		#{username,jdbcType=VARCHAR},
+  		#{password,jdbcType=VARCHAR}
+  	)
+  </insert>
+  
+  <insert id="save" parameterType="upgrade.pojo.City" >
+    insert into City
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="remote != null" >
+        remote,
+      </if>
+      <if test="port22 != null" >
+        port22,
+      </if>
+      <if test="port10 != null" >
+        port10,
+      </if>
+      <if test="port15 != null" >
+        port15,
+      </if>
+      <if test="port16 != null" >
+        port16,
+      </if>
+      <if test="port17 != null" >
+        port17,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="remote != null" >
+        #{remote,jdbcType=VARCHAR},
+      </if>
+      <if test="port22 != null" >
+        #{port22,jdbcType=BIGINT},
+      </if>
+      <if test="port10 != null" >
+        #{port10,jdbcType=BIGINT},
+      </if>
+      <if test="port15 != null" >
+        #{port15,jdbcType=BIGINT},
+      </if>
+      <if test="port16 != null" >
+        #{port16,jdbcType=BIGINT},
+      </if>
+      <if test="port17 != null" >
+        #{port16,jdbcType=BIGINT},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+   <delete id="delete" parameterType="java.lang.Long" >
+    delete from City
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteList" parameterType="java.util.List"> 
+       <![CDATA[ 
+           delete from City where id in 
+       ]]> 
+       <foreach collection="list" item="ids"  open="(" separator="," close=")">   
+           #{ids}  
+       </foreach> 
+   </delete>
+   
+   <update id="modify" parameterType="upgrade.pojo.City"  
+        flushCache="true">  
+        update city  
+        <set>  
+            <if test="name != null">  
+                name = #{name,jdbcType=VARCHAR},  
+            </if>  
+            <if test="remote != null">  
+                remote = #{remote ,jdbcType=VARCHAR},  
+            </if>  
+            <if test="port22 != null">  
+                port22 = #{port22,jdbcType=BIGINT},  
+            </if> 
+            <if test="port10 != null">  
+                port10 = #{port10,jdbcType=BIGINT},  
+            </if>
+            <if test="port15 != null">  
+                port15 = #{port15,jdbcType=BIGINT},  
+            </if>
+            <if test="port16 != null">  
+                port16 = #{port16,jdbcType=BIGINT},  
+            </if>
+            <if test="port17 != null">  
+                port17 = #{port17,jdbcType=BIGINT},  
+            </if> 
+            <if test="username != null">  
+                username = #{username,jdbcType=VARCHAR},  
+            </if>
+            <if test="password != null">  
+                password = #{password,jdbcType=VARCHAR},  
+            </if>
+        </set>  
+        where id = #{id,jdbcType=BIGINT}  
+    </update> 
+    
+    <select id="search" resultMap="CityMap"  parameterType="upgrade.pojo.City">
+    	select 
+	    <include refid="City_Column_List" />
+	    from City
+	    where 1=1
+	    <if test="name!=null">
+	    and name like #{name,jdbcType=VARCHAR}
+	    </if>
+	       
+    </select>  
+  
+</mapper>

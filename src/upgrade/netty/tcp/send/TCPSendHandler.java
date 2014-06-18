@@ -19,10 +19,10 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageCodec;
 import io.netty.util.CharsetUtil;
 
-@Component("sendHandler")
-public class SendHandler extends ByteToMessageCodec<String> {
+@Component("sendTcpHandler")
+public class TCPSendHandler extends ByteToMessageCodec<String> {
 
-	private static final Logger logger = LogManager.getLogger(SendHandler.class);
+	private static final Logger logger = LogManager.getLogger(TCPSendHandler.class);
 	
 	private final String filename = "tec.txt";
 	private File file=null;

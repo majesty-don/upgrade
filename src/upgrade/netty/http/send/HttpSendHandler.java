@@ -14,9 +14,9 @@ import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.util.CharsetUtil;
 
 @Component("sendHttpHandler")
-public class SendHandler extends SimpleChannelInboundHandler<HttpMessage> {
+public class HttpSendHandler extends SimpleChannelInboundHandler<HttpMessage> {
 
-	private static final Logger logger = LogManager.getLogger(SendHandler.class);
+	private static final Logger logger = LogManager.getLogger(HttpSendHandler.class);
 
 	private boolean readingChunks;
 	@Override

@@ -22,7 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSON;
 
 
-import upgrade.netty.http.send.Send;
+import upgrade.netty.http.send.HttpSend;
 import upgrade.netty.util.FileTool;
 import upgrade.pojo.City;
 import upgrade.pojo.CityQuery;
@@ -57,7 +57,7 @@ public class CityController  {
 		Map<String,Object> map=new HashMap<>();
 		map.put("total", lc.size());
 		map.put("rows", lc);
-		logger.debug("全部城市信息�?"+JSON.toJSONString(map));
+		logger.debug("全部城市信息："+JSON.toJSONString(map));
 		return new ModelAndView("city/list", map);
 	}
 	
@@ -141,7 +141,7 @@ public class CityController  {
 		map.put("total", lc.size());
 		map.put("rows", lc);
 		
-		logger.debug("查询出的城市�?"+JSON.toJSONString(map));
+		logger.debug("查询出的城市:"+JSON.toJSONString(map));
 		return new ModelAndView("city/list",map);
 	}
 	
@@ -175,13 +175,13 @@ public class CityController  {
 			id_list.add(Long.parseLong(id));
 		}
 		List<City> lc=cityService.getCitysByIds(id_list);
-		logger.info("升级城市信息�?"+JSON.toJSONString(lc));
+		logger.info("升级城市信息�?"+JSON.toJSONString(lc));
 		
-		//以下使用多线�?      因为会同时启动多个客户端连接多个服务�?  
+		//以下使用多线�?      因为会同时启动多个客户端连接多个服务�?  
 		for(City city:lc){
 			String uri="http://"+city.getRemote()+":"+city.getPort17();
 			String filepath=FileTool.getFilePath("send", "TcpsGisReceiver.jar");
-			Send send=new Send(uri,filepath);
+			HttpSend send=new HttpSend(uri,filepath);
 			pool.execute(send);	
 		}
 		mm.addAttribute("failure", false);
@@ -198,12 +198,12 @@ public class CityController  {
 			id_list.add(Long.parseLong(id));
 		}
 		List<City> lc=cityService.getCitysByIds(id_list);
-		logger.info("升级城市信息�?"+JSON.toJSONString(lc));
+		logger.info("升级城市信息�?"+JSON.toJSONString(lc));
 		
 		for(City city:lc){
 			String uri="http://"+city.getRemote()+":"+city.getPort17();
 			String filepath=FileTool.getFilePath("send", "BusServer.jar");
-			Send send=new Send(uri,filepath);
+			HttpSend send=new HttpSend(uri,filepath);
 			pool.execute(send);
 		}
 		mm.addAttribute("failure", false);

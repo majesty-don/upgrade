@@ -17,15 +17,15 @@ import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 
 @Component("sendHttpInitializer")
-public class SendInitializer extends ChannelInitializer<Channel> {
+public class HttpSendInitializer extends ChannelInitializer<Channel> {
 	
 	private  boolean ssl;
 	
-	public SendInitializer() {
+	public HttpSendInitializer() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public SendInitializer(boolean ssl) {
+	public HttpSendInitializer(boolean ssl) {
 		this.ssl = ssl;
 	}
 
@@ -57,7 +57,7 @@ public class SendInitializer extends ChannelInitializer<Channel> {
 		
 		cp.addLast("chunkedWriter",new ChunkedWriteHandler());
 		
-		cp.addLast("handler", new SendHandler());
+		cp.addLast("handler", new HttpSendHandler());
 		
 	}
 

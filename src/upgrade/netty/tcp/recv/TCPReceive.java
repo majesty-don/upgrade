@@ -1,4 +1,4 @@
-package upgrade.netty.http.recv;
+package upgrade.netty.tcp.recv;
 
 import javax.annotation.Resource;
 
@@ -15,27 +15,26 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import upgrade.netty.IServer;
-import upgrade.netty.region.recv.ReceiveInitializer;
 
-@Component("httpreceive")
+@Component("tcpreceive")
 @Service
-public class Receive implements IServer {
+public class TCPReceive implements IServer {
 
 	/**用于分配处理业务线程的线程组个数 */
 	private static final int GROUPSIZE = Runtime.getRuntime().availableProcessors()*2;//默认
 	/** 业务线程大小*/
 	private static final int THREADSIZE = 4;
 	
-	@Resource(name="receiveHttpInitializer")
-	private ReceiveInitializer receiveInitializer;
+	@Resource(name="receiveTcpInitializer")
+	private TCPReceiveInitializer receiveInitializer;
 	
 	private int port=9017;
 	
-	public Receive() {
+	public TCPReceive() {
 		
 	}
 	
-	public Receive(int port) {
+	public TCPReceive(int port) {
 		this.port = port;
 	}
 	

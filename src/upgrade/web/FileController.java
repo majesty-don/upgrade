@@ -84,15 +84,15 @@ public class FileController {
 	 * 使用plupload上传文件
 	 * @param file		文件对象
 	 * @param name		文件名称
-	 * @param chunk		数据块序�?
-	 * @param chunks	数据块�?�数
+	 * @param chunk		数据块序
+	 * @param chunks	数据块数
 	 * @return
 	 */
 	@RequestMapping(value="plupload",method=RequestMethod.POST)	
 	public String plupload(@RequestParam MultipartFile file, HttpSession session, String name, int chunk, int chunks) {
 		logger.debug("File Name:"+name);
 		try {
-			//�?查文件目录，不存在则创建
+			//检查文件目录，不存在则创建
 			String date=new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 			String relativePath = date+"/";
 			String realPath = "E:/upgrade/";//session.getServletContext().getRealPath("");

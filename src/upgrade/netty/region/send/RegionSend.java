@@ -1,13 +1,4 @@
-package upgrade.netty.tcp.send;
-
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
-import upgrade.netty.IServer;
-import upgrade.netty.http.send.SendInitializer;
+package upgrade.netty.region.send;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -18,28 +9,34 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
-@Component("send")
-@Service
-public class Send implements IServer {
+import javax.annotation.Resource;
 
-	
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
+import upgrade.netty.IServer;
+
+@Service
+@Component("regionsend")
+public class RegionSend implements IServer {
+
 	/**用于分配处理业务线程的线程组个数 */
 	protected static final int GROUPSIZE = Runtime.getRuntime().availableProcessors()*2;//默认
 	/** 业务线程大小*/
 	protected static final int THREADSIZE = 4;
 	
 	
-	@Resource(name="sendInitializer")
-	private SendInitializer sendInitializer;
+	@Resource(name="sendRegionInitializer")
+	private RegionSendInitializer sendInitializer;
 	
 	private String host="127.0.0.1";
 	private int port=9017;
 	
-	public Send() {
+	public RegionSend() {
 		
 	}
 
-	public Send(String host, int port) {
+	public RegionSend(String host, int port) {
 		this.host = host;
 		this.port = port;
 	}
@@ -85,5 +82,5 @@ public class Send implements IServer {
 			boss.shutdownGracefully();
 		}	
 	}
-	
+
 }

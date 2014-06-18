@@ -37,9 +37,9 @@ import io.netty.handler.logging.LoggingHandler;
 
 @Component("httpsend")
 @Service
-public class Send implements Runnable {
+public class HttpSend implements Runnable {
 
-	private static final Logger logger=LogManager.getLogger(Send.class);
+	private static final Logger logger=LogManager.getLogger(HttpSend.class);
 	
 	/**用于分配处理业务线程的线程组个数 */
 	protected static final int GROUPSIZE = Runtime.getRuntime().availableProcessors()*2;//默认
@@ -53,11 +53,11 @@ public class Send implements Runnable {
 	private String uri="http://localhost:9017";
     private String filePath=FileTool.getFilePath("send", "TcpsGisReceiver.jar");
     
-    public Send() {
+    public HttpSend() {
 		// TODO Auto-generated constructor stub
 	}
     
-    public Send(String uri, String filePath) {
+    public HttpSend(String uri, String filePath) {
         this.uri = uri;
         this.filePath = filePath;
     }
@@ -133,7 +133,7 @@ public class Send implements Runnable {
 		try {
 			Bootstrap boot=new Bootstrap();
 			
-			SendInitializer sendInitializer=new SendInitializer(ssl);
+			HttpSendInitializer sendInitializer=new HttpSendInitializer(ssl);
 			//sendInitializer.setSsl(ssl);
 			
 			boot.group(boss).channel(NioSocketChannel.class)

@@ -12,11 +12,11 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
 
-@Component("receiveInitializer")
-public class ReceiveInitializer extends ChannelInitializer<SocketChannel> {
+@Component("receiveTcpInitializer")
+public class TCPReceiveInitializer extends ChannelInitializer<SocketChannel> {
 	
-	@Resource(name="receiveHandler")
-	private ReceiveHandler receiveHandler;
+	@Resource(name="receiveTcpHandler")
+	private TCPReceiveHandler receiveHandler;
 	
 	@Override
 	protected void initChannel(SocketChannel ch) throws Exception {
