@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="upgrade.dao.FileMapper" >
+
+  <resultMap id="FileMap" type="upgrade.pojo.FileInfo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="filename" property="filename" jdbcType="VARCHAR" />
+    <result column="filepath" property="filepath" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="File_Column_List" >
+    id,filename,filepath 
+  </sql>
+  
+  <select id="findAll" resultMap="FileMap"  >
+    select 
+    <include refid="File_Column_List" />
+    from fileinfo
+  </select>
+  
+  <insert id="save" parameterType="upgrade.pojo.FileInfo" >
+    insert into fileinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="filename != null" >
+        filename,
+      </if>
+      <if test="filepath != null" >
+        filepath,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="filename != null" >
+        #{filename,jdbcType=VARCHAR},
+      </if>
+      <if test="filepath != null" >
+        #{filepath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+   <delete id="delete" parameterType="java.lang.Long" >
+    delete from fileinfo
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deleteList" parameterType="java.util.List"> 
+       <![CDATA[ 
+           delete from fileinfo where id in 
+       ]]> 
+       <foreach collection="list" item="ids"  open="(" separator="," close=")">   
+           #{ids}  
+       </foreach> 
+   </delete> 
+  
+</mapper>

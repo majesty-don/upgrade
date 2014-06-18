@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" 
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd"
+	default-lazy-init="true">
+
+	<description>Quartz Configuration</description>
+
+	<!-- 使用Annotation自动注册Bean-->
+	<context:component-scan base-package="*" />
+
+    <!-- enable autowire -->  
+    <context:annotation-config />
+
+	<!-- Quartz 定时任务 -->
+	
+	<task:executor id="executor" pool-size="5" />  
+    <task:scheduler id="scheduler" pool-size="10" />  
+    <task:annotation-driven executor="executor" scheduler="scheduler" /> 
+	
+	<!-- quartz -->
+	<!--  <bean name="quartzJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="upgrade.capture.QuartzJob" />
+		  <property name="jobDataAsMap">
+		  <map>
+			<entry key="cityService" value-ref="cityService" />
+		  </map>
+		</property>
+	</bean>-->
+	
+	<!-- Simple Trigger, run every 5 seconds -->
+	<!-- repeatInterval:每隔5秒进行一次 单位：毫秒 -->
+	<!-- startDelay:启动后延时1秒   单位：毫秒 -->
+	<!--  <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+ 
+		<property name="jobDetail" ref="quartzJob" />
+		
+		<property name="repeatInterval" value="5000" />
+		
+		<property name="startDelay" value="1000" />
+ 
+	</bean>-->
+ 
+	<!-- Cron Trigger, run every 5 seconds -->
+	<!--  <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+ 
+		<property name="jobDetail" ref="quartzJob" />
+		<property name="cronExpression" value="0/5 * * * * ?" />
+ 
+	</bean>
+	
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="jobDetails">
+			<list>
+				<ref bean="quartzJob" />
+			</list>
+		</property>
+		<property name="triggers">
+			<list>
+				<ref bean="cronTrigger" />
+			</list>
+		</property>
+	</bean>-->
+
+</beans>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="upgrade.dao.DBMonitorMapper" >
+
+  <resultMap id="DBMonitorMap" type="upgrade.pojo.DBMonitor" >
+    <id column="id" property="id" jdbcType="NUMERIC" />
+    <result column="cityNameCn" property="cityNameCn" jdbcType="VARCHAR" />
+    <result column="cityNameEn" property="cityNameEn" jdbcType="VARCHAR" />
+    <result column="dburl" property="dburl" jdbcType="VARCHAR" />
+    <result column="dbusername" property="dbusername" jdbcType="VARCHAR" />
+    <result column="dbpassword" property="dbpassword" jdbcType="VARCHAR" />
+    <result column="gpsTableType" property="gpsTableType" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="DBMonitor_Column_List" >
+    id,cityNameCn,cityNameEn,dburl,dbusername,dbpassword,gpsTableType 
+  </sql>
+  
+  <select id="select" resultMap="DBMonitorMap"  >
+    select 
+    <include refid="DBMonitor_Column_List" />
+    from monit_db
+  </select>
+  
+  <insert id="insert" parameterType="upgrade.pojo.DBMonitor" >
+    insert into monit_db
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cityNameCn != null" >
+        cityNameCn,
+      </if>
+      <if test="cityNameEn != null" >
+        cityNameEn,
+      </if>
+      <if test="dburl != null" >
+        dburl,
+      </if>
+      <if test="dbusername != null" >
+        dbusername,
+      </if>
+      <if test="dbpassword != null" >
+        dbpassword,
+      </if>
+      <if test="gpsTableType != null" >
+        gpsTableType,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cityNameCn != null" >
+        #{cityNameCn,jdbcType=VARCHAR},
+      </if>
+      <if test="cityNameEn != null" >
+        #{cityNameEn,jdbcType=VARCHAR},
+      </if>
+      <if test="dburl != null" >
+        #{dburl,jdbcType=VARCHAR},
+      </if>
+      <if test="dbusername != null" >
+        #{dbusername,jdbcType=VARCHAR},
+      </if>
+      <if test="dbpassword != null" >
+        #{dbpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="gpsTableType != null" >
+        #{gpsTableType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="upgrade.pojo.DBMonitor" >
+    update monit_db
+    <set >
+      <if test="cityNameCn != null" >
+        cityNameCn = #{cityNameCn,jdbcType=VARCHAR},
+      </if>
+      <if test="cityNameEn != null" >
+        cityNameEn = #{cityNameEn,jdbcType=VARCHAR},
+      </if>
+      <if test="dburl != null" >
+        dburl = #{dburl,jdbcType=VARCHAR},
+      </if>
+      <if test="dbusername != null" >
+        dbusername = #{dbusername,jdbcType=VARCHAR},
+      </if>
+      <if test="dbpassword != null" >
+        dbpassword = #{dbpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="gpsTableType != null" >
+        gpsTableType = #{gpsTableType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=NUMERIC}
+  </update>
+  
+   <delete id="delete" parameterType="java.lang.Long" >
+    delete from monit_db
+    where id = #{id,jdbcType=NUMERIC}
+  </delete>
+  
+  <delete id="deleteList" parameterType="java.util.List"> 
+       <![CDATA[ 
+           delete from monit_db where id in 
+       ]]> 
+       <foreach collection="list" item="ids"  open="(" separator="," close=")">   
+           #{ids}  
+       </foreach> 
+   </delete> 
+  
+</mapper>

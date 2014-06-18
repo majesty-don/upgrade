@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTDConfig 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<!-- mybatis的数据类型和处理器等等...都可以实现接口重写，然后配置 -->
+<configuration>
+	<!-- 命名空间 -->
+	<typeAliases>
+	    <typeAlias alias="City" type="upgrade.pojo.City"/>
+	    <typeAlias alias="FileInfo" type="upgrade.pojo.FileInfo"/>
+	    <typeAlias alias="FileCount" type="upgrade.pojo.FileCount"/>
+	    <typeAlias alias="DBMonitor" type="upgrade.pojo.DBMonitor"/>
+	</typeAliases>
+	
+	<!--映射文件 -->
+	<mappers>		
+		<mapper resource="upgrade/mapping/CityMapper.xml" />
+		<mapper resource="upgrade/mapping/FileMapper.xml" />
+		<mapper resource="upgrade/mapping/FileCountMapper.xml" />
+		<mapper resource="upgrade/mapping/DBMonitorMapper.xml" />
+	</mappers>
+</configuration>
+

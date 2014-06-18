@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" >
+
+<!-- 输出方式appender一般有5种： org.apache.log4j.RollingFileAppender(滚动文件，自动记录最新日志) 
+	org.apache.log4j.ConsoleAppender (控制台) org.apache.log4j.FileAppender (文件) 
+	org.apache.log4j.DailyRollingFileAppender (每天产生一个日志文件) org.apache.log4j.WriterAppender 
+	(将日志信息以流格式发送到任意指定的地方) -->
+
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<param name="Encoding" value="UTF-8" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="conversionPattern" value="%d{yyyy/MM/dd hh:mm:ss.SSS} [%p] %c[%M]- %m%n" />
+		</layout>
+
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMax" value="ERROR" />
+			<param name="LevelMin" value="TRACE" />
+		</filter>
+	</appender>
+
+	<!-- <appender name="Recv" class="org.apache.log4j.FileAppender">
+		<param name="Encoding" value="UTF-8" />
+		设置File参数：日志输出文件名
+		<param name="File" value="E:/logs/recv.log" />
+		设置是否在重新启动服务时，在原有日志的基础添加新日志
+		<param name="Append" value="false" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d - %c -%-4r [%t] %-5p %x - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="Send" class="org.apache.log4j.FileAppender">
+		<param name="Encoding" value="UTF-8" />
+		设置File参数：日志输出文件名
+		<param name="File" value="E:/logs/send.log" />
+		设置是否在重新启动服务时，在原有日志的基础添加新日志
+		<param name="Append" value="false" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d - %c -%-4r [%t] %-5p %x - %m%n" />
+		</layout>
+	</appender> -->
+
+	<appender name="File" class="org.apache.log4j.FileAppender">
+		<param name="Encoding" value="UTF-8" />
+		<!-- 设置File参数：日志输出文件名 -->
+		<param name="File" value="E:/logs/wrapper.log" />
+		<!-- 设置是否在重新启动服务时，在原有日志的基础添加新日志 -->
+		<param name="Append" value="false" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d - %c -%-4r [%t] %-5p %x - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="RollingFileAppender" class="org.apache.log4j.RollingFileAppender">
+		<param name="Encoding" value="UTF-8" />
+		<param name="Append" value="false" />
+		<param name="MaxFileSize" value="200MB" />
+		<param name="File" value="E:/logs/roll.log" />
+		<param name="MaxBackupIndex" value="10" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd hh:mm:ss}:%p %t %c - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- 发邮件（只有ERROR时才会发送！） -->
+	<appender name="MAIL" class="org.apache.log4j.net.SMTPAppender">
+		<param name="Encoding" value="UTF-8" />
+		<param name="threshold" value="debug" />
+		<!-- 日志的错误级别 <param name="threshold" value="fatal"/> -->
+		<!-- 缓存文件大小，日志达到512K时发送Email -->
+		<param name="BufferSize" value="512" /><!-- 单位K -->
+		<param name="From" value="majesty_don@163.com" />
+		<param name="SMTPHost" value="smtp.163.com" />
+		<param name="Subject" value="juyee-log4jMessage" />
+		<param name="To" value="majesty_don@hotmail.com" />
+		<param name="SMTPUsername" value="test" />
+		<param name="SMTPPassword" value="test" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss.SSS} [%p]-[%c] %m%n" />
+		</layout>
+	</appender>
+
+	<logger name="com.ibatis" additivity="true">
+		<level value="debug"></level>
+		<!-- <appender-ref ref="console" /> -->
+	</logger>
+
+	<logger name="java.sql.ResultSet" additivity="true">
+		<level value="info"></level>
+		<!-- <appender-ref ref="console" /> -->
+	</logger>
+
+	<logger name="java.sql.Connection" additivity="true">
+		<level value="debug"></level>
+		<!-- <appender-ref ref="console" /> -->
+	</logger>
+
+	<logger name="java.sql.Statement" additivity="true">
+		<level value="debug"></level>
+		<!-- <appender-ref ref="console" /> -->
+	</logger>
+
+	<logger name="java.sql.PreparedStatement" additivity="true">
+		<level value="debug"></level>
+		<!-- <appender-ref ref="console" /> -->
+	</logger>
+
+	<logger name="org.springframework.web" additivity="true">
+		<level value="debug"></level>
+	</logger>
+
+	<!-- <logger name="upgrade.netty.tcp.recv" additivity="true">
+		<level value="debug"></level>
+	</logger>
+
+	<logger name="upgrade.netty.tcp.send" additivity="true">
+		<level value="debug"></level>
+	</logger> -->
+	
+	<logger name="upgrade.netty" additivity="true">
+		<level value="debug"></level>
+	</logger>
+
+	<!--通过<category></category>的定义可以将各个包中的类日志输出到不同的日志文件中 -->
+	<!-- <category name="upgrade.netty.tcp.recv" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="Recv" />
+	</category>
+
+	<category name="upgrade.netty.tcp.send" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="Send" />
+	</category> -->
+
+	<root>
+		<level value="DEBUG" />
+		<appender-ref ref="console" />
+		<!-- <appender-ref ref="Recv" />
+		<appender-ref ref="Send" /> -->
+		<appender-ref ref="File"/>
+	</root>
+
+
+</log4j:configuration>
