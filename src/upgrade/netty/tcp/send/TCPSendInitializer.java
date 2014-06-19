@@ -23,7 +23,7 @@ public class TCPSendInitializer extends ChannelInitializer<Channel> {
 		cp.addLast("logger", new LoggingHandler());
 		
 		/**
-		 * 由于使用字节的方式进行文件的接受，因此不需要其他的解码器（ChannelHandler�?
+		 * 由于使用字节的方式进行文件的接受，因此不需要其他的解码器(ChannelHandler)
 		 */
 		
 		cp.addLast("handler", sendHandler);

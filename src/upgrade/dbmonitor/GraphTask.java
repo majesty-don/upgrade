@@ -60,7 +60,7 @@ public class GraphTask implements Callable<DBMonitor> {
 		boolean sucess = false;
 		long from = System.currentTimeMillis();
 
-		logger.info(city.getCityNameCn() + " ----开始生成绘制图片---- ");
+		logger.info(city.getCityNameCn() + " ----开始绘制图片---- ");
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;

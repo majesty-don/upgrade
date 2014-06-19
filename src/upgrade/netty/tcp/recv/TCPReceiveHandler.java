@@ -102,7 +102,7 @@ public class TCPReceiveHandler extends ByteToMessageCodec<String> {
 			fos.flush();
 			bos.flush();
 			size+=length;
-			logger.info("已接收文件字节数�?"+size);
+			logger.info("已接收文件字节数："+size);
 			if(size==filelength){
 				
 				fos.close();

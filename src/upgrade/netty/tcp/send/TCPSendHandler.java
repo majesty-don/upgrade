@@ -74,9 +74,9 @@ public class TCPSendHandler extends ByteToMessageCodec<String> {
 	        
 	        logger.debug("file length:"+filelength);
 	       
-			int pos=filelength;//剩余文件的位�?
+			int pos=filelength;//剩余文件的位置
 			
-			byte[] buffer=new byte[SIZE];//文件发�?�块的大�?
+			byte[] buffer=new byte[SIZE];//文件发送块的大小
 			int length=SIZE;
 				
 			while(length>0 && pos>0){
