@@ -175,9 +175,9 @@ public class CityController  {
 			id_list.add(Long.parseLong(id));
 		}
 		List<City> lc=cityService.getCitysByIds(id_list);
-		logger.info("升级城市信息�?"+JSON.toJSONString(lc));
+		logger.info("升级城市信息："+JSON.toJSONString(lc));
 		
-		//以下使用多线�?      因为会同时启动多个客户端连接多个服务�?  
+		//以下使用多线线程      因为会同时启动多个客户端连接多个服务器  
 		for(City city:lc){
 			String uri="http://"+city.getRemote()+":"+city.getPort17();
 			String filepath=FileTool.getFilePath("send", "TcpsGisReceiver.jar");
@@ -198,7 +198,7 @@ public class CityController  {
 			id_list.add(Long.parseLong(id));
 		}
 		List<City> lc=cityService.getCitysByIds(id_list);
-		logger.info("升级城市信息�?"+JSON.toJSONString(lc));
+		logger.info("升级城市信息："+JSON.toJSONString(lc));
 		
 		for(City city:lc){
 			String uri="http://"+city.getRemote()+":"+city.getPort17();

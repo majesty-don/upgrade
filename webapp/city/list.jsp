@@ -12,17 +12,14 @@ a:link {
 	text-decoration: none;
 	color: blue
 }
-
-　　 a:active {
+a:active {
 	text-decoration: blink
 }
-
-　　 a:hover {
+a:hover {
 	text-decoration: underline;
 	color: red
 }
-
-　　 a:visited {
+a:visited {
 	text-decoration: none;
 	color: green
 }
@@ -74,14 +71,32 @@ a:link {
 			pagination : true,
 			rownumbers : true,
 			toolbar : [ {
-				text : '上传文件',
-				iconCls : 'icon-upload',
+				text : '添&nbsp;&nbsp;&nbsp;加',
+				iconCls : 'icon-add',
 				handler : function() {
 					addWindow();
 				}
 			}, '-', {
 				text : '删&nbsp;&nbsp;&nbsp;除',
 				iconCls : 'icon-remove',
+				handler : function() {
+					removeList(listDisplayEId);
+				}
+			},'-', {
+				text : '上传文件',
+				iconCls : 'icon-upload',
+				handler : function() {
+					addWindow();
+				}
+			},'-', {
+				text : '升级SERV',
+				iconCls : 'icon-serv',
+				handler : function() {
+					removeList(listDisplayEId);
+				}
+			},'-', {
+				text : '升级RECV',
+				iconCls : 'icon-recv',
 				handler : function() {
 					removeList(listDisplayEId);
 				}
@@ -97,6 +112,14 @@ a:link {
 	function addTab(title, url){
 		if ($('#tab').tabs('exists', title)){
 			$('#tab').tabs('select', title);
+			var currTab = $('#tab').tabs('getTab', title);  
+            $('#tab').tabs('update', {
+            	tab: currTab, 
+            	options: {
+            		content: content, 
+            		closable: true
+            		}
+            });
 		} else {
 			var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';
 			$('#tab').tabs('add',{
@@ -242,14 +265,35 @@ a:link {
 </head>
 <body class="easyui-layout">
 	<div data-options="region:'west',split:false,collapsible:false" title="功能区" style="width:150px;">
-		<br/>
-		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="addTab('baidu','http://www.baidu.com')">baidu</a>
-		<br/>
-		<br/>
-		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="addTab('jquery','http://jquery.com/')">jquery</a>
-		<br/>
-		<br/>
-		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="addTab('easyui','http://jeasyui.com/')">easyui</a>
+		
+		<table>
+			<tr style="height:30px;">
+				<td align="center"><a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-monitor'" onclick="addTab('系统监控','<c:url value="druid/index.html" />')">系统监控</a></td>
+			</tr>
+			<tr style="height:30px;">
+				<td align="center"><a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-monitor'" onclick="addTab('文件监控','<c:url value="count/toCrawl.html" />')">文件监控</a></td>
+			</tr>
+			<tr style="height:30px;">
+				<td align="center"><a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-monitor'" onclick="addTab('页面链接','<c:url value="city/9010.html" />')">页面链接</a></td>
+			</tr>
+			<tr style="height:30px;">
+				<td align="center"><a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-monitor'" onclick="addTab('9016监控','<c:url value="city/9016.html" />')">SERV监控</a></td>
+			</tr>
+			<tr style="height:30px;">
+				<td align="center"><a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-monitor'" onclick="addTab('9015监控','<c:url value="city/9015.html" />')">RECV监控</a></td>
+			</tr>
+			<tr style="height:30px;">
+				<td align="center"><a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-monitor'" onclick="addTab('图形监控','<c:url value="dbmonitor/pic.html" />')">图形监控</a></td>
+			</tr>
+			<tr style="height:30px;">
+				<td align="center"><a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-list'" onclick="addTab('上传文件','<c:url value="file/toList.html" />')">上传文件</a></td>
+			</tr>
+			<tr style="height:30px;">
+				<td align="center"><a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-list'" onclick="addTab('数据配置','<c:url value="dbmonitor/toList.html" />')">数据配置</a></td>
+			</tr>
+			
+			
+		</table>
 	
 	</div>
 	<div data-options="region:'south',split:false" style="height:25px;">
@@ -258,8 +302,8 @@ a:link {
 		</div>
 	</div>
 	
-	<div region="center" >
-		<div id="tab" class="easyui-tabs">
+	<div region="center" style="verflow:hidden;" >
+		<div id="tab" class="easyui-tabs" data-options="fit : true,border : false" >
 			<div title="城市信息">
 				<table align="center" id="gridlist"  loadMsg='正在处理,请稍候...'>
 					<thead>
@@ -281,6 +325,10 @@ a:link {
 	   			</table>
 			</div>
 		</div>		
+ 	</div>
+ 	
+ 	<div id="upload" title="上传文件" style="font-size: 10; display: none;">
+		<div id="uploader"></div>
  	</div>
 
 	<div id="AddInfo" icon="icon-add" title="添加" style="display: none;">

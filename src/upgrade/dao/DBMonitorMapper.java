@@ -7,7 +7,9 @@ import upgrade.pojo.DBMonitor;
 
 @OracleDao(value="dbMonitorMapper")
 public interface DBMonitorMapper {
+	
 	public List<DBMonitor> select();
+	
 	public void insert(DBMonitor dbCity);
 	
 	public void update(DBMonitor dbCity);

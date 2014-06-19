@@ -82,3 +82,22 @@
 .icon-large-chart{
 	background:url('icons/large_chart.png') no-repeat center center;
 }
+
+.icon-monitor{
+	background:url('icons/db.png') no-repeat center center;
+}
+
+.icon-upload{
+	background:url('icons/upload.png') no-repeat center center;
+}
+
+.icon-recv{
+	background:url('icons/up_recv.png') no-repeat center center;
+}
+.icon-serv{
+	background:url('icons/up_serv.png') no-repeat center center;
+}
+
+.icon-list{
+	background:url('icons/list.png') no-repeat center center;
+}

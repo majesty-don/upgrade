@@ -17,12 +17,14 @@
   <select id="findAll" resultMap="FileCountMap"  >
     select 
     <include refid="File_Count_Column_List" />
-    from MONIT_CITYFILE_COUNT
+    from MONIT_CITYFILE_COUNT where trunc(datetime)>=trunc(sysdate-10) 
+    order by cityname asc, datetime desc 
   </select>
   
   <select id="findNameAndMax" resultMap="FileCountMap"  >
-    select cityname,filemaxcount
-    from MONIT_CITYFILE_COUNT
+    select distinct cityname,filemaxcount
+    from MONIT_CITYFILE_COUNT 
+    order by cityname asc
   </select>
   
   <insert id="insert" parameterType="upgrade.pojo.FileCount" >

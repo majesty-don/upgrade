@@ -68,7 +68,7 @@
 <style type="text/css">
 
  .left3 { /*用在五列布局上*/
-     border: 0px solid #D3D3D3;
+     border: 1px solid #D3D3D3;
      width: 100%;
      height: 240px;
     /*  background-color: #D3D3D3; */
