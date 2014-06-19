@@ -76,6 +76,7 @@ public class RegionReceiveHandler extends SimpleChannelInboundHandler<String> {
 				fos.close();
 				logger.info("Finished");
 				nextMode(Block.INFO);
+				ctx.close();
 			}else{
 				nextMode(Block.DATA);
 			}

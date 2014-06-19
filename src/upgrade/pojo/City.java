@@ -139,8 +139,4 @@ public class City {
 				+ this.remote + ":" + this.port10+","+this.port15+","+this.port16+","+this.port22+","+this.port17
 				+",username:"+this.getUsername()+",password:"+this.getPassword();
 	}
-	
-	public String getPort(){
-		return "port22:"+this.getPort22()+",port10:"+this.getPort10()+",port15:"+this.getPort15()+",port16:"+this.getPort16()+",port17"+this.getPort17();
-	}
 }

@@ -4,63 +4,39 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:context="http://www.springframework.org/schema/context"
   xmlns:mvc="http://www.springframework.org/schema/mvc"
+  xmlns:beans="http://www.springframework.org/schema/beans" 
   xsi:schemaLocation="
     http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
     http://www.springframework.org/schema/context
-    http://www.springframework.org/schema/context/spring-context-3.2.xsd
+    http://www.springframework.org/schema/context/spring-context-4.0.xsd
     http://www.springframework.org/schema/mvc
-    http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+    http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
     
     <!-- 扫描controller（controller层注入） -->
    <context:component-scan base-package="upgrade"/>
    
-   <!-- 使用Annotation自动注册Bean,只扫描@Controller -->
-	<context:component-scan base-package="upgrade" use-default-filters="false"><!-- base-package 如果多个，用“,”分隔 -->
-		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-	</context:component-scan>
-	
-	<!-- 视图文件解析配置 -->
-	<!-- <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="${web.view.prefix}"/>
-		<property name="suffix" value="${web.view.suffix}"/>
-	</bean> -->
-	
-   <!-- 避免IE在ajax请求时，返回json出现下载 -->
-   <!--  <bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">		
-		<property name="supportedMediaTypes">
-			<list>
-				<value>text/html;charset=UTF-8</value>
-			</list>
-		</property>
-	</bean>-->
-	
-	
-    
+	   
 	<bean id="themeChangeInterceptor"
 		class="org.springframework.web.servlet.theme.ThemeChangeInterceptor">
 		<property name="paramName" value="theme" />
 	</bean>
 
-	<bean id="themeResolver"
-		class="org.springframework.web.servlet.theme.CookieThemeResolver">
+	<bean id="themeResolver" class="org.springframework.web.servlet.theme.CookieThemeResolver">
 		<property name="defaultThemeName" value="default" />
 	</bean>
 
-	<!-- ExceptionResolver begin -->
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerExceptionResolver" />
-	<!-- ExceptionResolver end -->
+
 
 	<!-- AcceptHeaderLocaleResolver,SessionLocaleResolver,CookieLocaleResolver互斥只能用1个 
 		,id 必须为localeResolver -->
 	<!-- <bean id="localeResolver" class="org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver"/> -->
-	<bean id="localeResolver"
-		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
 		<property name="defaultLocale" value="zh_CN" />
 	</bean>
 
-	<bean id="localeChangeInterceptor"
-		class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+	<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
 		<property name="paramName" value="lang" />
 	</bean>
 
@@ -77,11 +53,10 @@
 	<!-- deal with static content like css,gif and so on -->
 	<mvc:default-servlet-handler/>
 	
-	<bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter" />
+	
 	
 	<!-- xstream start -->
-	<bean id="xStreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
-	</bean>
+	<bean id="xStreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller"/>
 	<!-- xstream end -->
 	
 	<!-- marshallingConverter可用jaxb或者xstream，jaxb需要在javabean上添加annotation,总体来说xstream好 -->
@@ -94,18 +69,21 @@
 	
 	<!-- jsonConverter用到jackson json lib -->
 	<bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
-		<property name="supportedMediaTypes" value="application/json"/>
+		<property name="supportedMediaTypes" value="application/json"/>	
 	</bean>
 	
+    <!-- fastjson转换器 -->  
+    <bean id="fastJsonHttpMessageConverter"  class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter"/>   
+	
 	<!-- 完成请求和注解POJO的映射 -->
-	<bean
-		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
 		<property name="messageConverters">
 			<list>
 				<bean class="org.springframework.http.converter.FormHttpMessageConverter" />
-				<ref bean="stringHttpMessageConverter" />
+				<bean class="org.springframework.http.converter.StringHttpMessageConverter" />
 				<ref bean="marshallingConverter" />
 				<ref bean="jsonConverter" />
+				<ref bean="fastJsonHttpMessageConverter" /><!-- json转换器 --> 
 				<bean
 					class="org.springframework.http.converter.BufferedImageHttpMessageConverter" />
 				<bean
@@ -117,8 +95,7 @@
 	</bean>
 
 	
-	<bean
-		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
 		<property name="order" value="1" />
 		<property name="defaultContentType" value="text/html" />
 		<!-- 是否从扩展名中取mediaType(如xxx.xml,xxx.html),与mediaTypes匹配 -->
@@ -140,8 +117,7 @@
 		</property>
 		<property name="defaultViews">
 			<list>
-				<bean
-					class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
+				<bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
 				<bean class="org.springframework.web.servlet.view.xml.MarshallingView">
 					<property name="marshaller" ref="xStreamMarshaller" />
 				</bean>
@@ -152,10 +128,8 @@
 		
 		<property name="viewResolvers">
 			<list>
-				<bean
-					class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-					<property name="viewClass"
-						value="org.springframework.web.servlet.view.JstlView" /><!-- 视图页面使用JSTL标签，因此需要使用JstlView -->
+				<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+					<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" /><!-- 视图页面使用JSTL标签，因此需要使用JstlView -->
 					<property name="prefix" value="/" />
 					<property name="suffix" value=".jsp"></property>
 				</bean>

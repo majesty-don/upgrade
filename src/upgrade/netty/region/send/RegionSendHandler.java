@@ -20,7 +20,7 @@ public class RegionSendHandler extends SimpleChannelInboundHandler<String> {
 
 	private static final Logger logger = LogManager.getLogger(RegionSendHandler.class);
 	
-	private final String filename = "c3p0-service.xml";
+	private final String filename = "tec.txt";
 	private long length=0L;
 	private File file=null;
 	
@@ -61,6 +61,13 @@ public class RegionSendHandler extends SimpleChannelInboundHandler<String> {
             ctx.writeAndFlush("File not found: " + file + '\n');
         }
 		
+	}
+	
+	@Override
+	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+		// TODO Auto-generated method stub
+		super.channelInactive(ctx);
+		ctx.close();
 	}
 	
 }

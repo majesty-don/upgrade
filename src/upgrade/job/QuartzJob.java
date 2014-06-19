@@ -19,6 +19,8 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSON;
+
 import upgrade.pojo.City;
 import upgrade.pojo.FileCount;
 import upgrade.service.CityService;
@@ -115,8 +117,7 @@ public class QuartzJob extends QuartzJobBean {
 				if (i == 1) {
 
 					while (stdout.available() > 0) {
-						readCount += stdout.read(buffer, readCount,
-								8192 - readCount);
+						readCount += stdout.read(buffer, readCount,8192 - readCount);
 						String s = new String(buffer, "utf-8");
 						String[] temp = s.split("\n");
 						if (temp.length > 1) {
@@ -125,39 +126,38 @@ public class QuartzJob extends QuartzJobBean {
 									continue;
 								String[] temp1 = string.split(" ");
 								map.put(temp1[1], temp1[0].split("\n")[0]);
-								/* System.out.println(temp1[1] +"+"+ temp1[0]); */
 							}
 						}
 					}
-					/*
-					 * System.out.println("!!!!!!!!"); for (Map.Entry<String,
-					 * String> entity : map.entrySet()) {
-					 * 
-					 * System.out.println(entity.getKey() + " " +
-					 * entity.getValue()); }
-					 */
+					
 					ss = "BusServerApp: " + map.get("BusServerApp")
-							+ ",GpsReceiverApp: " + map.get("GpsReceiverApp")
-							+ ",Main: " + map.get("Main");
-					System.out.println(map.get("BusServerApp"));
-					System.out.println(map.get("GpsReceiverApp"));
-					System.out.println(map.get("Main"));
+							+ ",GpsReceiverApp: " + map.get("GpsReceiverApp");
+					if(map.get("DownloadServerApp")!=null){
+						ss+=",DownloadServerApp: "+map.get("DownloadServerApp");
+					}
+					if(map.get("Main")!=null){
+						ss+=",Main: " + map.get("Main");
+					}
+							
 
 				} else if (i == 2) {
 					while (stdout.available() > 0) {
 						int len = stdout.read(buffer);
-						if (len > 0) // this check is somewhat paranoid
-							System.out.write(buffer, 0, len);
+						if (len > 0){ // this check is somewhat paranoid
+							String info=new String(buffer, 0, len);
+							logger.info("文件数:"+info);
+						}
 
 					}
 					ss = new String(buffer, "utf-8");
-					System.out.println("ss: " + ss.split("\n")[0]);
 				}
 
 				while (stderr.available() > 0) {
 					int len = stderr.read(buffer);
-					if (len > 0) // this check is somewhat paranoid
-						System.err.write(buffer, 0, len);
+					if (len > 0){ // this check is somewhat paranoid
+						String err=new String(buffer, 0, len);
+						logger.info("error:"+err);
+					}
 				}
 
 			} catch (IOException e) {
@@ -165,10 +165,11 @@ public class QuartzJob extends QuartzJobBean {
 				e.printStackTrace();
 			}
 		}
+		logger.info("抓取的文件数信息:"+JSON.toJSONString(ss));
 		return ss.split("\n")[0];
 	}
 
-	String GetEachFileCount(Connection conn, String command) {
+	String GetEachFileCount(Connection conn, String command,String appname) {
 		String count = null;
 		try {
 			sess = conn.openSession();
@@ -176,7 +177,7 @@ public class QuartzJob extends QuartzJobBean {
 			stdout = sess.getStdout();
 			stderr = sess.getStderr();
 			count = doit(2, stdout, stderr, sess);
-			System.out.println(count);
+			logger.info(appname+":"+count);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -204,8 +205,7 @@ public class QuartzJob extends QuartzJobBean {
 
 			/* Authenticate */
 
-			boolean isAuthenticated = conn.authenticateWithPassword(city.getUsername(),
-					city.getPassword());
+			boolean isAuthenticated = conn.authenticateWithPassword(city.getUsername(),city.getPassword());
 
 			if (isAuthenticated == false)
 				throw new IOException("Authentication failed.");
@@ -240,7 +240,7 @@ public class QuartzJob extends QuartzJobBean {
 			sess.close();
 
 			command = "ulimit -n";
-			allfilecount = GetEachFileCount(conn, command);
+			allfilecount = GetEachFileCount(conn, command,"MaxFileCount");
 
 			int i = s.split(",").length;
 			String a[] = s.split(",");
@@ -248,11 +248,10 @@ public class QuartzJob extends QuartzJobBean {
 			String count[] = new String[i];
 
 			for (int b = 0; b < i; b++) {
-				System.out.println("ok");
 				if (a[b].contains("BusServerApp:")) {
 					command = "lsof -p " + a[b].split("BusServerApp: ")[1]
 							+ " | wc -l";
-					filecount = GetEachFileCount(conn, command);
+					filecount = GetEachFileCount(conn, command,"BusServerApp");
 					Array.set(appname, b, "BusServerApp");
 					Array.set(count, b, filecount);
 
@@ -260,23 +259,28 @@ public class QuartzJob extends QuartzJobBean {
 
 					command = "lsof -p " + a[b].split("GpsReceiverApp: ")[1]
 							+ " | wc -l";
-					filecount = GetEachFileCount(conn, command);
+					filecount = GetEachFileCount(conn, command,"GpsReceiverApp");
 					Array.set(appname, b, "GpsReceiverApp");
 					Array.set(count, b, filecount);
 
 				} else if (a[b].contains("Main:")) {
-
 					command = "lsof -p " + a[b].split("Main: ")[1] + " | wc -l";
-					filecount = GetEachFileCount(conn, command);
-					Array.set(appname, b, "DownloadServer");
+					filecount = GetEachFileCount(conn, command,"Main");
+					Array.set(appname, b, "Main");
+					Array.set(count, b, filecount);
+				}else if(a[b].contains("DownloadServerApp:")){
+					command = "lsof -p " + a[b].split("DownloadServerApp: ")[1] + " | wc -l";
+					filecount = GetEachFileCount(conn, command,"DownloadServerApp");
+					Array.set(appname, b, "DownloadServerApp");
 					Array.set(count, b, filecount);
 				}
 			}
 			
-			for(int k=0;k<appname.length;k++){
-				FileCount fileCount=new FileCount(city.getName(), appname[k], new Date(), Long.parseLong(filecount), Long.parseLong(allfilecount));
+			for(int k=0,j=0;k<appname.length&&j<count.length;k++,j++){
+				FileCount fileCount=new FileCount(city.getName(), appname[k], new Date(), Long.parseLong(count[j]), Long.parseLong(allfilecount));
 				fileCountService.save(fileCount);
 			}
+			
 		} catch (IOException e) {
 			e.printStackTrace(System.err);
 			System.exit(2);
@@ -293,7 +297,7 @@ public class QuartzJob extends QuartzJobBean {
 		}
 	}
 	
-	@Scheduled(cron = "0 0 8,12,17 * * ?")
+	@Scheduled(cron = "0 0 8,12,18 * * ?")
 	public void start() {
 		List<City> lc=cityService.findAll();
 		for(City city:lc){

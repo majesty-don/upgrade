@@ -51,7 +51,7 @@ public class HttpSend implements Runnable {
 //	private SendInitializer sendInitializer ;
 	
 	private String uri="http://localhost:9017";
-    private String filePath=FileTool.getFilePath("send", "TcpsGisReceiver.jar");
+    private String filePath=FileTool.getFilePath("send", "worldcup.jpg");
     
     public HttpSend() {
 		// TODO Auto-generated constructor stub

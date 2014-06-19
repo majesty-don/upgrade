@@ -24,7 +24,7 @@ public class TCPSendHandler extends ByteToMessageCodec<String> {
 
 	private static final Logger logger = LogManager.getLogger(TCPSendHandler.class);
 	
-	private final String filename = "tec.txt";
+	private final String filename = "worldcup.jpg";
 	private File file=null;
 	
 	@Override
