@@ -127,7 +127,7 @@ public class GraphTask implements Callable<DBMonitor> {
 
 					String tmppath = dir.getAbsolutePath();
 
-					ImageIO.write(image, "png", new File(tmppath, fileName));// 将文件保存到指定的路�?
+					ImageIO.write(image, "png", new File(tmppath, fileName));// 将文件保存到指定的路径
 
 					logger.debug("finished: " + fileName);
 				}

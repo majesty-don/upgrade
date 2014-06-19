@@ -10,9 +10,9 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
-import com.alibaba.fastjson.JSON;
+import upgrade.util.FileTool;
 
-import upgrade.netty.util.FileTool;
+import com.alibaba.fastjson.JSON;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;

@@ -24,6 +24,7 @@ import com.alibaba.fastjson.JSON;
 
 import upgrade.pojo.DBMonitor;
 import upgrade.service.DBMonitorService;
+import upgrade.util.FileTool;
 
 @Service
 public class DBMonitorJob extends QuartzJobBean {
@@ -33,11 +34,7 @@ public class DBMonitorJob extends QuartzJobBean {
 	@Autowired
 	private DBMonitorService dbMonitorService;
 	
-	private static final String relativePath=System.getProperty("user.dir");
-	
-	// 文件保存路径
-	//private static final String pathInit = relativePath.replaceAll("bin", "upgrade\\png");
-	private static final String pathInit = relativePath+"\\png";
+	private static final String pathInit = FileTool.getDir("png");
 	private static final int dateCntInit = 1;
 	private static final int firstDayInit = 0;
 	

@@ -24,7 +24,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
-import upgrade.netty.util.FileTool;
+import upgrade.util.FileTool;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;

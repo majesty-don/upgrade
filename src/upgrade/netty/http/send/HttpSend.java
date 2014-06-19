@@ -11,7 +11,8 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import upgrade.netty.util.FileTool;
+import upgrade.util.FileTool;
+
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
