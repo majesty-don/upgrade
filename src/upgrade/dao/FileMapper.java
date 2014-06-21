@@ -2,10 +2,10 @@ package upgrade.dao;
 
 import java.util.List;
 
-import upgrade.common.MyBatisDao;
+import upgrade.common.OracleDao;
 import upgrade.pojo.FileInfo;
 
-@MyBatisDao(value="fileMapper")
+@OracleDao(value="fileMapper")
 public interface FileMapper {
 	
 	public List<FileInfo> findAll();

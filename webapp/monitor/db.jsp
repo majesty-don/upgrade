@@ -56,7 +56,7 @@
 			<tr>
 				<c:forEach items="${list }" var="item"  begin="${i }" end="${j }" >
 					<td>
-                		<a href="<c:url value="/png/${filedate }${item.cityNameEn}.png"/>" target="_blank" ><img src="<c:url value='/png/${filedate }${item.cityNameEn}.png'/>" width="370" height="200" alt="<c:url value="/png/${filedate }${item.cityNameEn}.png"/>"/></a>			
+                		<a href="<c:url value="/png/${filedate }${item.citynameen}.png"/>" target="_blank" ><img src="<c:url value='/png/${filedate }${item.citynameen}.png'/>" width="370" height="200" alt="<c:url value="/png/${filedate }${item.citynameen}.png"/>"/></a>			
 					</td>
 				</c:forEach>
 				<c:set var="i" value="${i+3 }"/>

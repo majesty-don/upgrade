@@ -3,7 +3,7 @@
 <mapper namespace="upgrade.dao.FileMapper" >
 
   <resultMap id="FileMap" type="upgrade.pojo.FileInfo" >
-    <id column="id" property="id" jdbcType="BIGINT" />
+    <id column="id" property="id" jdbcType="NUMERIC" />
     <result column="filename" property="filename" jdbcType="VARCHAR" />
     <result column="filepath" property="filepath" jdbcType="VARCHAR" />
   </resultMap>
@@ -15,11 +15,11 @@
   <select id="findAll" resultMap="FileMap"  >
     select 
     <include refid="File_Column_List" />
-    from fileinfo
+    from MONIT_FILE
   </select>
   
   <insert id="save" parameterType="upgrade.pojo.FileInfo" >
-    insert into fileinfo
+    insert into MONIT_FILE
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="filename != null" >
         filename,
@@ -39,13 +39,13 @@
   </insert>
   
    <delete id="delete" parameterType="java.lang.Long" >
-    delete from fileinfo
+    delete from MONIT_FILE
     where id = #{id,jdbcType=BIGINT}
   </delete>
   
   <delete id="deleteList" parameterType="java.util.List"> 
        <![CDATA[ 
-           delete from fileinfo where id in 
+           delete from MONIT_FILE where id in 
        ]]> 
        <foreach collection="list" item="ids"  open="(" separator="," close=")">   
            #{ids}  

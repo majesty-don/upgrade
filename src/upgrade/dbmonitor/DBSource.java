@@ -4,10 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import upgrade.pojo.DBMonitor;
+import upgrade.pojo.City;
 
 public class DBSource{
-	public static Connection getConnection(DBMonitor city){
+	public static Connection getConnection(City city){
 		Connection conn=null;
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");// 加载驱动

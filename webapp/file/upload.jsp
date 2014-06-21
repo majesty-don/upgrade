@@ -19,7 +19,7 @@ $(function(){
         $("#uploader").pluploadQueue({ 
             // General settings 
             runtimes : 'html5,gears,browserplus,silverlight,flash,html4', 
-            url : 'plupload.html', 
+            url : '../file/plupload.html', 
             max_file_size : '100mb', 
             unique_names: true, 
             chunk_size: '10mb', 

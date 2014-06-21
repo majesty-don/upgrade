@@ -61,9 +61,9 @@
 			<tr>
 				<c:forEach items="${list }" var="city"  begin="${i }" end="${j }" varStatus="status">
 				<td>
-					<a target="_blank" href="http://${city.remote}:${city.port15 }/<%=arg%>"><c:out value="${city.name }"/></a>
+					<a target="_blank" href="http://${city.host}:${city.port15 }/<%=arg%>"><c:out value="${city.citynamecn }"/></a>
 					<br/>
-					<iframe name="${city.name }" src="http://${city.remote}:${city.port15 }/<%=arg%>"  height=250 width=100% style="border:1px solid #D3D3D3;">No Support Frame </iframe>
+					<iframe name="${city.citynamecn }" src="http://${city.host}:${city.port15 }/<%=arg%>"  height=250 width=100% style="border:1px solid #D3D3D3;">No Support Frame </iframe>
 				</td>
 				</c:forEach>
 				<c:set var="i" value="${i+3 }"/>

@@ -10,7 +10,6 @@
 	    <typeAlias alias="City" type="upgrade.pojo.City"/>
 	    <typeAlias alias="FileInfo" type="upgrade.pojo.FileInfo"/>
 	    <typeAlias alias="FileCount" type="upgrade.pojo.FileCount"/>
-	    <typeAlias alias="DBMonitor" type="upgrade.pojo.DBMonitor"/>
 	</typeAliases>
 	
 	<!--映射文件 -->
@@ -18,7 +17,6 @@
 		<mapper resource="upgrade/mapping/CityMapper.xml" />
 		<mapper resource="upgrade/mapping/FileMapper.xml" />
 		<mapper resource="upgrade/mapping/FileCountMapper.xml" />
-		<mapper resource="upgrade/mapping/DBMonitorMapper.xml" />
 	</mappers>
 </configuration>
 

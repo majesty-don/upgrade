@@ -197,7 +197,7 @@ public class QuartzJob extends QuartzJobBean {
 			String allfilecount;
 			String command = null;
 			logger.info("城市信息："+city.toString());
-			conn = new Connection(city.getRemote(), city.getPort22());
+			conn = new Connection(city.getHost(), city.getPort22());
 
 			/* Now connect */
 
@@ -277,7 +277,7 @@ public class QuartzJob extends QuartzJobBean {
 			}
 			
 			for(int k=0,j=0;k<appname.length&&j<count.length;k++,j++){
-				FileCount fileCount=new FileCount(city.getName(), appname[k], new Date(), Long.parseLong(count[j]), Long.parseLong(allfilecount));
+				FileCount fileCount=new FileCount(city.getCitynamecn(), appname[k], new Date(), Long.parseLong(count[j]), Long.parseLong(allfilecount));
 				fileCountService.save(fileCount);
 			}
 			

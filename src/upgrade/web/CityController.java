@@ -2,7 +2,9 @@ package upgrade.web;
 
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,21 +59,39 @@ public class CityController  {
 		Map<String,Object> map=new HashMap<>();
 		map.put("total", lc.size());
 		map.put("rows", lc);
-		logger.debug("全部城市信息："+JSON.toJSONString(map));
+		logger.info("全部城市信息："+JSON.toJSONString(map));
 		return new ModelAndView("city/list", map);
+	}
+	
+	@RequestMapping("/toUpload")
+	public ModelAndView toUpload(){
+		return new ModelAndView("file/upload");
+	}
+	
+	@RequestMapping("/toAdd")
+	public ModelAndView toAdd(){
+		return new ModelAndView("city/add");
 	}
 	
 	@RequestMapping("/add")
 	public String add(ModelMap mm,City city){
-		logger.debug(city.toString());
+		logger.info(city.toString());
 		cityService.insert(city);
 		mm.addAttribute("failure", false);
-		return "forward:toList";
+		return "forward:toAdd";
+	}
+	
+	@RequestMapping("/toEdit")
+	public ModelAndView toEdit(HttpServletRequest request,long id){
+		City city=cityService.getCityByID(id);
+		logger.info("City:"+city.toString());
+		request.setAttribute("city", city);
+		return new ModelAndView("city/edit");
 	}
 	
 	@RequestMapping("/modify")
 	public String modify(ModelMap mm,City city){
-		logger.debug(city.toString());
+		logger.info(city.toString());
 		cityService.update(city);
 		mm.addAttribute("failure", false);
 		return "forward:toList";
@@ -79,7 +99,7 @@ public class CityController  {
 	
 	@RequestMapping("/delete")
 	public String delete(ModelMap mm,long id){
-		logger.debug("id:"+id);
+		logger.info("id:"+id);
 		cityService.deleteByID(id);
 		mm.addAttribute("failure", false);
 		return "forward:toList";
@@ -93,7 +113,7 @@ public class CityController  {
 		for(String id:idArray){
 			id_list.add(Long.parseLong(id));
 		}
-		logger.debug("ids:"+JSON.toJSONString(id_list));
+		logger.info("ids:"+JSON.toJSONString(id_list));
 		cityService.deleteListByIds(id_list);
 		mm.addAttribute("failure", false);
 		return "forward:toList";
@@ -103,7 +123,7 @@ public class CityController  {
 	@RequestMapping("/search")
 	public ModelAndView search(CityQuery cq) throws UnsupportedEncodingException{
 
-		logger.debug(cq.toString());
+		logger.info("查询关键字："+JSON.toJSONString(cq));
 	
 		cq.init();
 		
@@ -114,25 +134,9 @@ public class CityController  {
 				&& params.length > 0 && params.length == values.length){
 			
 			for (int i = 0; i < params.length; i++) {
-				if("name".equals(params[i].toString())){
-					city.setName((String)values[i]);
+				if("citynamecn".equals(params[i].toString())){
+					city.setCitynamecn((String)values[i]);
 				}
-				if("remote".equals(params[i].toString())){
-					city.setRemote((String)values[i]);
-				}
-				if("port22".equals(params[i].toString())){
-					city.setPort22(Integer.parseInt((String)values[i]));
-				}
-				if("port10".equals(params[i].toString())){
-					city.setPort10(Integer.parseInt((String)values[i]));
-				}
-				if("port15".equals(params[i].toString())){
-					city.setPort15(Integer.parseInt((String)values[i]));
-				}
-				if("port16".equals(params[i].toString())){
-					city.setPort16(Integer.parseInt((String)values[i]));
-				}
-				
 			}
 	    }
 		
@@ -141,7 +145,7 @@ public class CityController  {
 		map.put("total", lc.size());
 		map.put("rows", lc);
 		
-		logger.debug("查询出的城市:"+JSON.toJSONString(map));
+		logger.info("查询出的城市:"+JSON.toJSONString(map));
 		return new ModelAndView("city/list",map);
 	}
 	
@@ -166,6 +170,8 @@ public class CityController  {
 		return new ModelAndView("monitor/9016");
 	}
 	
+	
+	
 	@RequestMapping("/recv")
 	public String upRecv(HttpServletRequest request,ModelMap mm){
 		String ids=request.getParameter("ids");
@@ -179,7 +185,7 @@ public class CityController  {
 		
 		//以下使用多线线程      因为会同时启动多个客户端连接多个服务器  
 		for(City city:lc){
-			String uri="http://"+city.getRemote()+":"+city.getPort17();
+			String uri="http://"+city.getHost()+":"+city.getPort17();
 			String filepath=FileTool.getFilePath("send", "TcpsGisReceiver.jar");
 			HttpSend send=new HttpSend(uri,filepath);
 			pool.execute(send);	
@@ -201,13 +207,25 @@ public class CityController  {
 		logger.info("升级城市信息："+JSON.toJSONString(lc));
 		
 		for(City city:lc){
-			String uri="http://"+city.getRemote()+":"+city.getPort17();
+			String uri="http://"+city.getHost()+":"+city.getPort17();
 			String filepath=FileTool.getFilePath("send", "BusServer.jar");
 			HttpSend send=new HttpSend(uri,filepath);
 			pool.execute(send);
 		}
 		mm.addAttribute("failure", false);
 		return "forward:toList";
+	}
+	
+	private String formatDate(Date date){
+		return new SimpleDateFormat("yyMMdd").format(date);
+	}
+	
+	@RequestMapping("/pic")
+	public ModelAndView toPic(HttpServletRequest request){
+		List<City> ldb=cityService.getDBs();
+		request.setAttribute("filedate", formatDate(new Date()));
+		request.setAttribute("list", ldb);
+		return new ModelAndView("monitor/db");
 	}
 	
 }

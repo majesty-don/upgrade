@@ -28,7 +28,7 @@ import upgrade.service.FileCountService;
 @RequestMapping("/count")
 public class FileCountController{
 	
-	private static final Logger logger=LogManager.getLogger(DBMonitorController.class);
+	private static final Logger logger=LogManager.getLogger(FileCountController.class);
 	
 	@Resource(name="fileCountService")
 	private FileCountService fileCountService;

@@ -28,13 +28,13 @@ import javax.imageio.ImageIO;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import upgrade.pojo.DBMonitor;
+import upgrade.pojo.City;
 
-public class GraphTask implements Callable<DBMonitor> {
+public class GraphTask implements Callable<City> {
 
 	private static final Logger logger = LogManager.getLogger(GraphTask.class);
 
-	private final DBMonitor city;
+	private final City city;
 	private final int firstDay;
 	private final int dateCnt;
 	private final String path;
@@ -45,7 +45,7 @@ public class GraphTask implements Callable<DBMonitor> {
 	int busCnt;
 	String log = "";
 
-	public GraphTask(DBMonitor city, int firstDay, int dateCnt, String path) {
+	public GraphTask(City city, int firstDay, int dateCnt, String path) {
 		this.city = city;
 		this.firstDay = firstDay;
 		this.dateCnt = dateCnt;
@@ -56,11 +56,11 @@ public class GraphTask implements Callable<DBMonitor> {
 			"yyyy.MM.dd HH:mm");
 
 	@Override
-	public DBMonitor call() throws Exception {
+	public City call() throws Exception {
 		boolean sucess = false;
 		long from = System.currentTimeMillis();
 
-		logger.info(city.getCityNameCn() + " ----开始绘制图片---- ");
+		logger.info(city.getCitynamecn() + " ----开始绘制图片---- ");
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -73,7 +73,7 @@ public class GraphTask implements Callable<DBMonitor> {
 				Date curDate = new Date(toDay - TimeUnit.DAYS.toMillis(i));
 
 				String gpsTable = "NETPACK_GPS".equals(city.getGpsTableType()) ? "NETPACK_GPS PARTITION (P_GPS_"+ YYYYHHDD(new Date()) + ")": "NETPACK_GPS_" + YYYYHHDD(new Date());
-				String fileName = new SimpleDateFormat("yyMMdd").format(curDate) + "" + city.getCityNameEn() + ".png";
+				String fileName = new SimpleDateFormat("yyMMdd").format(curDate) + "" + city.getCitynameen() + ".png";
 
 				logger.debug("Load File Name:" + fileName);
 
@@ -101,7 +101,7 @@ public class GraphTask implements Callable<DBMonitor> {
 
 					map = loadDbData(conn, gpsTable);
 				} catch (SQLException ex) {
-					new Exception(city.getCityNameEn() + " NG:", ex).printStackTrace();// ex.printStackTrace();
+					new Exception(city.getCitynameen() + " NG:", ex).printStackTrace();// ex.printStackTrace();
 					log = YYYYMMDD_HHMM.format(System.currentTimeMillis())+ " " + ex.getLocalizedMessage();// 20140220 不再输出类名 ex.toString();
 					break;
 				} finally {
@@ -118,7 +118,7 @@ public class GraphTask implements Callable<DBMonitor> {
 					if (minutes >= 2) {// 如果用时过长，显示时长
 						nowStr = nowStr + " " + minutes + "m";
 					}
-					BufferedImage image = drawChart(city.getCityNameCn(), map,nowStr);// 增加用时
+					BufferedImage image = drawChart(city.getCitynamecn(), map,nowStr);// 增加用时
 
 					File dir = new File(path);
 					if (!dir.exists()) {
@@ -134,10 +134,10 @@ public class GraphTask implements Callable<DBMonitor> {
 			}
 			sucess = true;
 		} catch (Exception ex) {
-			new Exception(city.getCityNameEn() + " NG:" + ex.toString(), ex).printStackTrace();
+			new Exception(city.getCitynameen() + " NG:" + ex.toString(), ex).printStackTrace();
 		} finally {
 			// DBSource.close(conn);//同时会关闭连接
-			logger.debug(city.getCityNameEn() + (sucess ? " OK" : "NG") + " "+ ((System.currentTimeMillis() - from) / 1000)+ " seconds.");
+			logger.debug(city.getCitynameen() + (sucess ? " OK" : "NG") + " "+ ((System.currentTimeMillis() - from) / 1000)+ " seconds.");
 		}
 		return city;
 	}

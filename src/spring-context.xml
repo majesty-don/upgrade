@@ -31,92 +31,6 @@
 	<context:component-scan base-package="upgrade">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
-    
-    <!-- 数据源配置，使用druid数据连接池 -->
-	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
-			<property name="driverClassName" value="${jdbc.driver}"/>
-			<!-- 基本属性 url、user、password -->
-			<property name="url" value="${jdbc.url}" />
-			<property name="username" value="${jdbc.username}" />
-			<property name="password" value="${jdbc.password}" />
-			
-			<!-- 配置初始化大小、最小、最大 -->
-			<property name="initialSize" value="${jdbc.pool.minIdle}" />
-			<property name="minIdle" value="${jdbc.pool.minIdle}" /> 
-			<property name="maxActive" value="${jdbc.pool.maxActive}" />
-			
-			<!-- 配置获取连接等待超时的时间 -->
-			<property name="maxWait" value="60000" />
-			
-			<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-			<property name="timeBetweenEvictionRunsMillis" value="60000" />
-			
-			<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
-			<property name="minEvictableIdleTimeMillis" value="300000" />
-			
-			<property name="validationQuery" value="SELECT 'x' FROM DUAL" />
-			<property name="testWhileIdle" value="true" />
-			<property name="testOnBorrow" value="false" />
-			<property name="testOnReturn" value="false" />
-			
-			<!-- 配置监控统计拦截的filters -->
-		    <property name="filters" value="stat" /> 
-		</bean>
-       
-    <!-- Mybatis begin -->
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-	  	<property name="dataSource" ref="dataSource"/>
-	 	<property name="typeAliasesPackage" value="upgrade"/>
-	 	<!-- 自动扫描映射文件 --> 
-	  	<property name="mapperLocations" value="classpath:/upgrade/mapper/*.xml"/>
-	</bean>
-	
-	 <!-- 扫描basePackage下所有以@MyBatisRepository注解的接口-->
-	  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
-        <property name="basePackage" value="upgrade"/>
-        <property name="annotationClass" value="upgrade.common.MyBatisDao"/>
-    </bean> 
-    <!-- Mybatis end -->
-    
-    <!-- 配置事务管理器 -->
-   <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-	
-	<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor" abstract="false">
-		<property name="transactionManager">
-			<ref bean="transactionManager" />
-		</property>
-		<property name="transactionAttributes">
-			<props>
-				<prop key="insert*"> PROPAGATION_REQUIRED</prop>
-				<prop key="save*"> PROPAGATION_REQUIRED</prop>
-				<prop key="create*"> PROPAGATION_REQUIRED</prop>
-				<prop key="update*"> PROPAGATION_REQUIRED</prop>
-				<prop key="delete*"> PROPAGATION_REQUIRED</prop>
-				<prop key="*"> PROPAGATION_REQUIRED, readOnly</prop>
-			</props>
-		</property>
-	</bean>
-	<bean id="autoProxyCreator"
-		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
-		<property name="interceptorNames">
-			<list>
-				<idref bean="transactionInterceptor" />
-			</list>
-		</property>
-		<property name="beanNames">
-			<list>
-				<value>*Service</value>
-				<value>*ServiceImpl</value>
-			</list>
-		</property>
-	</bean>
-
-	<!-- 使用annotation定义数据库事务，这样可以在类或方法中直接使用@Transactional注解来声明事务 -->
-	<tx:annotation-driven transaction-manager="transactionManager" />
-	
 	
 	<bean id="dataSource2" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
 			<property name="driverClassName" value="${jdbc2.driver}"/>
@@ -155,8 +69,9 @@
 	 	<!-- 自动扫描映射文件 --> 
 	  	<property name="mapperLocations">
 	  		<list>
-	  			<value>classpath:/upgrade/mapper/DBMonitorMapper.xml</value>
+	  			<value>classpath:/upgrade/mapper/CityMapper.xml</value>
 	  			<value>classpath:/upgrade/mapper/FileCountMapper.xml</value>
+	  			<value>classpath:/upgrade/mapper/FileMapper.xml</value>
 	  		</list>
 	  	</property>
 	</bean>

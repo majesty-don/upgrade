@@ -21,4 +21,6 @@ public interface CityService {
 	public List<City> search(City city);
 	
 	public List<City> getCitysByIds(List<Long> ids);
+	
+	public List<City> getDBs();
 }

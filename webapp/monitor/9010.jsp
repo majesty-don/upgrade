@@ -58,11 +58,11 @@
 		</tr>
 		<c:forEach items="${list }" var="city" >
 			<tr>
-				<td><c:out value="${city.name }" /></td>
-				<td><a target="_blank" href="http://${city.remote}:${city.port10 }/zndd"><c:out value="http://${city.remote}:${city.port10 }/zndd"/></a></td>
-				<td><a target="_blank" href="http://${city.remote}:${city.port15 }"><c:out value="http://${city.remote}:${city.port15 }"/></a></td>
-				<td><a target="_blank" href="http://${city.remote}:${city.port16 }"><c:out value="http://${city.remote}:${city.port16 }"/></a></td>
-				<td><a target="_blank" href="http://${city.remote}:${city.port10 }/mnt/dbconns.jsp"><c:out value="http://${city.remote}:${city.port10 }/mnt/dbconns.jsp"/></a></td>
+				<td><c:out value="${city.citynamecn }" /></td>
+				<td><a target="_blank" href="http://${city.host}:${city.port10 }/zndd"><c:out value="http://${city.host}:${city.port10 }/zndd"/></a></td>
+				<td><a target="_blank" href="http://${city.host}:${city.port15 }"><c:out value="http://${city.host}:${city.port15 }"/></a></td>
+				<td><a target="_blank" href="http://${city.host}:${city.port16 }"><c:out value="http://${city.host}:${city.port16 }"/></a></td>
+				<td><a target="_blank" href="http://${city.host}:${city.port10 }/mnt/dbconns.jsp"><c:out value="http://${city.host}:${city.port10 }/mnt/dbconns.jsp"/></a></td>
 			</tr>
 		</c:forEach>
    </table>	

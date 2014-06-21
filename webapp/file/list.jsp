@@ -51,7 +51,7 @@ function initList(listDisplayEId){
 			text:'上传文件',
 			iconCls:'icon-upload',
 			handler:function(){
-				addWindow();
+				addWindow('uploader','../city/toUpload.html','上传文件');
 			}
 		},'-',{
 			text:'删&nbsp;&nbsp;&nbsp;除',
@@ -166,36 +166,36 @@ function cSelect(value,row,index,field){
  * 点添加按钮操作，打开新窗口
  * @return
  */
-function addWindow(){
-    var cont = '<iframe scrolling="yes" frameborder="0" src="<c:url value="/file/upload.jsp"/>" style="width:100%;height:100%;"></iframe>';
-    $('#uploader').window({ 
-        title: '上传文件',
-        width: 780, 
-        height: 390, 
-        //隐藏内容
-        collapsible:false, 
-        //最小化按钮是否可用
-        minimizable:false, 
-        //最大化按钮
-        maximizable:false, 
-        //是否可关闭
-        closable:true, 
-        //关闭状态
-        closed: false, 
-        //是否可自由拖动
-        draggable:false, 
-        //是否可改变大小
-        resizable:false, 
-        //阴影
-        shadow:false, 
-        //模态方式打开
-        modal:true,
-        //内容
-        content:cont
-    });
-	$("#uploader").unload(function() {
-    	$('#gridlist').datagrid('reload');
-    }); 
+function addWindow(divid,url,title) {
+	var cont = '<iframe scrolling="yes" frameborder="0" src="<c:url value="'+url+'"/>" style="width:100%;height:100%;"></iframe>';
+	$('#'+divid).window({
+		title : title,
+		width : 780,
+		height : 390,
+		//隐藏内容
+		collapsible : false,
+		//最小化按钮是否可用
+		minimizable : false,
+		//最大化按钮
+		maximizable : false,
+		//是否可关闭
+		closable : true,
+		//关闭状态
+		closed : false,
+		//是否可自由拖动
+		draggable : false,
+		//是否可改变大小
+		resizable : false,
+		//阴影
+		shadow : false,
+		//模态方式打开
+		modal : true,
+		//内容
+		content : cont
+	});
+	$("#"+divid).unload(function() {
+		$('#gridlist').datagrid('reload');
+	});
 }
 
 

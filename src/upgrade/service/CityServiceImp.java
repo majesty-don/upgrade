@@ -48,7 +48,7 @@ public class CityServiceImp implements CityService {
 
 	@Override
 	public City getCityByID(long id) {
-		return cityMapper.find(id);
+		return cityMapper.findById(id);
 	}
 
 	@Override
@@ -67,6 +67,12 @@ public class CityServiceImp implements CityService {
 	public List<City> getCitysByIds(List<Long> ids) {
 		// TODO Auto-generated method stub
 		return cityMapper.findList(ids);
+	}
+
+	@Override
+	public List<City> getDBs() {
+		// TODO Auto-generated method stub
+		return cityMapper.findDBAll();
 	}
 
 	

@@ -3,58 +3,118 @@
 <mapper namespace="upgrade.dao.CityMapper" >
 
   <resultMap id="CityMap" type="upgrade.pojo.City" >
-    <id column="id" property="id" jdbcType="BIGINT" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="remote" property="remote" jdbcType="VARCHAR" />
-    <result column="port22" property="port22" jdbcType="BIGINT" />
-    <result column="port10" property="port10" jdbcType="BIGINT" />
-    <result column="port15" property="port15" jdbcType="BIGINT" />
-    <result column="port16" property="port16" jdbcType="BIGINT" />
-    <result column="port17" property="port17" jdbcType="BIGINT" />
+    <id column="id" property="id" jdbcType="NUMERIC" />
+    <result column="citynamecn" property="citynamecn" jdbcType="VARCHAR" />
+    <result column="citynameen" property="citynameen" jdbcType="VARCHAR" />
+    <result column="host" property="host" jdbcType="VARCHAR" />
+    <result column="port22" property="port22" jdbcType="NUMERIC" />
+    <result column="port10" property="port10" jdbcType="NUMERIC" />
+    <result column="port15" property="port15" jdbcType="NUMERIC" />
+    <result column="port16" property="port16" jdbcType="NUMERIC" />
+    <result column="port17" property="port17" jdbcType="NUMERIC" />
     <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="dburl" property="dburl" jdbcType="VARCHAR" />
+    <result column="dbusername" property="dbusername" jdbcType="VARCHAR" />
+    <result column="dbpassword" property="dbpassword" jdbcType="VARCHAR" />
+    <result column="gpsTableType" property="gpsTableType" jdbcType="VARCHAR" />
+    <result column="dbadminusername" property="dbadminusername" jdbcType="VARCHAR" />
+    <result column="dbadminpassword" property="dbadminpassword" jdbcType="VARCHAR" />
   </resultMap>
   
-  <sql id="City_Column_List" >
-    id,name,remote,port22,port10,port15,port16,port17,username,password 
+  <!-- 全部字段信息 -->
+  <sql id="City_Base_Column_List">
+  	id,citynamecn,citynameen,host,port22,port10,port15,port16,port17,username,password,
+  	dburl,dbusername,dbpassword,gpsTableType,dbadminusername,dbadminpassword
+  </sql>
+  
+  <!-- 网关字段信息 -->
+  <sql id="City_GW_Column_List" >
+    id,citynamecn,host,port22,port10,port15,port16,port17,username,password 
+  </sql>
+  
+  <!-- 数据库字段信息 -->
+  <sql id="City_DB_Column_List">
+  	citynamecn,citynameen,dburl,dbusername,dbpassword,gpsTableType
   </sql>
   
   <select id="findAll" resultMap="CityMap"  >
     select 
-    <include refid="City_Column_List" />
-    from City
+    <include refid="City_Base_Column_List" />
+    from MONIT_CITY order by citynamecn asc
   </select>
   
-  <select id="find" resultMap="CityMap"  parameterType="java.lang.Long">
+  <select id="findDBAll" resultMap="CityMap"  >
     select 
-    <include refid="City_Column_List" />
-    from City
-    where id = #{id,jdbcType=BIGINT}
+    <include refid="City_DB_Column_List" />
+    from MONIT_CITY order by citynamecn asc
   </select>
+  
+  <select id="findById" resultMap="CityMap"  parameterType="java.lang.Long">
+    select 
+    <include refid="City_Base_Column_List" />
+    from MONIT_CITY
+    where id = #{id,jdbcType=NUMERIC}
+  </select>
+  
+  <select id="findList" resultMap="CityMap" parameterType="java.util.List">
+    select 
+    <include refid="City_Base_Column_List" />
+    from MONIT_CITY
+    where id in
+    <foreach collection="list" item="ids"  open="(" separator="," close=")">   
+           #{ids}  
+    </foreach> 
+  </select>
+  
+  
+  
+     <select id="search" resultMap="CityMap"  parameterType="upgrade.pojo.City">
+    	select 
+	    <include refid="City_Base_Column_List" />
+	    from MONIT_CITY
+	    where 1=1
+	    <if test="citynamecn!=null">
+	    and citynamecn like #{citynamecn,jdbcType=VARCHAR}
+	    </if>
+	       
+    </select> 
   
   <insert id="add" parameterType="upgrade.pojo.City">
-  	insert into city(name,remote,port22,port10,port15,port16,port17,username,password)
+  	insert into MONIT_CITY(citynamecn,citynameen,host,port22,port10,port15,port16,
+  	port17,username,password,
+  	dburl,dbusername,dbpassword,gpsTableType,dbadminusername,dbadminpassword)
   	values(
-  		#{name,jdbcType=VARCHAR},
-  		#{remote,jdbcType=VARCHAR},
-  		#{port22,jdbcType=BIGINT},
-  		#{port10,jdbcType=BIGINT},
-  		#{port15,jdbcType=BIGINT},
-  		#{port16,jdbcType=BIGINT},
-  		#{port17,jdbcType=BIGINT},
+  		#{citynamecn,jdbcType=VARCHAR},
+  		#{citynameen,jdbcType=VARCHAR},
+  		#{host,jdbcType=VARCHAR},
+  		#{port22,jdbcType=NUMERIC},
+  		#{port10,jdbcType=NUMERIC},
+  		#{port15,jdbcType=NUMERIC},
+  		#{port16,jdbcType=NUMERIC},
+  		#{port17,jdbcType=NUMERIC},
   		#{username,jdbcType=VARCHAR},
-  		#{password,jdbcType=VARCHAR}
+  		#{password,jdbcType=VARCHAR},
+  		#{dburl,jdbcType=VARCHAR},
+  		#{dbusername,jdbcType=VARCHAR},
+  		#{dbpassword,jdbcType=VARCHAR},
+  		#{gpsTableType,jdbcType=VARCHAR},
+  		#{dbadminusername,jdbcType=VARCHAR},
+  		#{dbadminpassword,jdbcType=VARCHAR}
   	)
   </insert>
   
   <insert id="save" parameterType="upgrade.pojo.City" >
-    insert into City
+    insert into MONIT_CITY
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="name != null" >
-        name,
+      <if test="citynamecn != null" >
+        citynamecn,
       </if>
-      <if test="remote != null" >
-        remote,
+      <if test="citynameen != null" >
+        citynameen,
+      </if>
+      <if test="host != null" >
+        host,
       </if>
       <if test="port22 != null" >
         port22,
@@ -77,28 +137,49 @@
       <if test="password != null" >
         password,
       </if>
+      <if test="dburl != null" >
+        dburl,
+      </if>
+      <if test="dbusername != null" >
+        dbusername,
+      </if>
+      <if test="dbpassword != null" >
+        dbpassword,
+      </if>
+      <if test="dbadminusername != null" >
+        dbadminusername,
+      </if>
+      <if test="dbadminpassword != null" >
+        dbadminpassword,
+      </if>
+      <if test="gpsTableType != null" >
+        gpsTableType,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
+      <if test="citynamecn != null" >
+        #{citynamecn,jdbcType=VARCHAR},
       </if>
-      <if test="remote != null" >
-        #{remote,jdbcType=VARCHAR},
+      <if test="citynameen != null" >
+        #{citynameen,jdbcType=VARCHAR},
+      </if>
+      <if test="host != null" >
+        #{host,jdbcType=VARCHAR},
       </if>
       <if test="port22 != null" >
-        #{port22,jdbcType=BIGINT},
+        #{port22,jdbcType=NUMERIC},
       </if>
       <if test="port10 != null" >
-        #{port10,jdbcType=BIGINT},
+        #{port10,jdbcType=NUMERIC},
       </if>
       <if test="port15 != null" >
-        #{port15,jdbcType=BIGINT},
+        #{port15,jdbcType=NUMERIC},
       </if>
       <if test="port16 != null" >
-        #{port16,jdbcType=BIGINT},
+        #{port16,jdbcType=NUMERIC},
       </if>
       <if test="port17 != null" >
-        #{port16,jdbcType=BIGINT},
+        #{port16,jdbcType=NUMERIC},
       </if>
       <if test="username != null" >
         #{username,jdbcType=VARCHAR},
@@ -106,47 +187,67 @@
       <if test="password != null" >
         #{password,jdbcType=VARCHAR},
       </if>
+      <if test="dburl != null" >
+        #{dburl,jdbcType=VARCHAR},
+      </if>
+      <if test="dbusername != null" >
+        #{dbusername,jdbcType=VARCHAR},
+      </if>
+      <if test="dbpassword != null" >
+        #{dbpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="dbadminusername != null" >
+        #{dbadminusername,jdbcType=VARCHAR},
+      </if>
+      <if test="dbadminpassword != null" >
+        #{dbadminpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="gpsTableType != null" >
+        #{gpsTableType,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   
    <delete id="delete" parameterType="java.lang.Long" >
-    delete from City
-    where id = #{id,jdbcType=BIGINT}
+    delete from MONIT_CITY
+    where id = #{id,jdbcType=NUMERIC}
   </delete>
   
   <delete id="deleteList" parameterType="java.util.List"> 
        <![CDATA[ 
-           delete from City where id in 
+           delete from MONIT_CITY where id in 
        ]]> 
        <foreach collection="list" item="ids"  open="(" separator="," close=")">   
            #{ids}  
        </foreach> 
    </delete>
    
-   <update id="modify" parameterType="upgrade.pojo.City"  
-        flushCache="true">  
-        update city  
+   <update id="modify" parameterType="upgrade.pojo.City"  flushCache="true">  
+        update MONIT_CITY  
         <set>  
-            <if test="name != null">  
-                name = #{name,jdbcType=VARCHAR},  
-            </if>  
-            <if test="remote != null">  
-                remote = #{remote ,jdbcType=VARCHAR},  
+            <if test="citynamecn != null" >
+        		citynamecn = #{citynamecn,jdbcType=VARCHAR},
+		    </if>
+		    <if test="citynameen != null" >
+		        citynameen = #{citynameen,jdbcType=VARCHAR},
+		    </if> 
+            <if test="host != null">  
+                host = #{host,jdbcType=VARCHAR},  
             </if>  
             <if test="port22 != null">  
-                port22 = #{port22,jdbcType=BIGINT},  
+                port22 = #{port22,jdbcType=NUMERIC},  
             </if> 
             <if test="port10 != null">  
-                port10 = #{port10,jdbcType=BIGINT},  
+                port10 = #{port10,jdbcType=NUMERIC},  
             </if>
             <if test="port15 != null">  
-                port15 = #{port15,jdbcType=BIGINT},  
+                port15 = #{port15,jdbcType=NUMERIC},  
             </if>
             <if test="port16 != null">  
-                port16 = #{port16,jdbcType=BIGINT},  
+                port16 = #{port16,jdbcType=NUMERIC},  
             </if>
             <if test="port17 != null">  
-                port17 = #{port17,jdbcType=BIGINT},  
+                port17 = #{port17,jdbcType=NUMERIC},  
             </if> 
             <if test="username != null">  
                 username = #{username,jdbcType=VARCHAR},  
@@ -154,19 +255,26 @@
             <if test="password != null">  
                 password = #{password,jdbcType=VARCHAR},  
             </if>
+            <if test="dburl != null" >
+	        	dburl = #{dburl,jdbcType=VARCHAR},
+	      	</if>
+	      	<if test="dbusername != null" >
+	        	dbusername = #{dbusername,jdbcType=VARCHAR},
+	      	</if>
+	      	<if test="dbpassword != null" >
+	        	dbpassword = #{dbpassword,jdbcType=VARCHAR},
+	      	</if>
+	      	<if test="dbadminusername != null" >
+	        	dbadminusername = #{dbadminusername,jdbcType=VARCHAR},
+	      	</if>
+	      	<if test="dbadminpassword != null" >
+	        	dbadminpassword = #{dbadminpassword,jdbcType=VARCHAR},
+	      	</if>
+	      	<if test="gpsTableType != null" >
+	        	gpsTableType = #{gpsTableType,jdbcType=VARCHAR},
+	      	</if>
         </set>  
-        where id = #{id,jdbcType=BIGINT}  
-    </update> 
-    
-    <select id="search" resultMap="CityMap"  parameterType="upgrade.pojo.City">
-    	select 
-	    <include refid="City_Column_List" />
-	    from City
-	    where 1=1
-	    <if test="name!=null">
-	    and name like #{name,jdbcType=VARCHAR}
-	    </if>
-	       
-    </select>  
+        where id = #{id,jdbcType=NUMERIC}  
+    </update>  
   
 </mapper>
