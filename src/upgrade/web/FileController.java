@@ -32,6 +32,7 @@ import com.alibaba.fastjson.JSON;
 
 import upgrade.pojo.FileInfo;
 import upgrade.service.FileService;
+import upgrade.util.FileTool;
 
 /**
  * 上传文件的控制器
@@ -94,8 +95,8 @@ public class FileController {
 		try {
 			//检查文件目录，不存在则创建
 			String date=new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-			String relativePath = date+"/";
-			String realPath = "E:/upgrade/";//session.getServletContext().getRealPath("");
+			String relativePath = date+File.separator;
+			String realPath = FileTool.getDir("upgrade");//session.getServletContext().getRealPath("");
 			logger.debug("real path:"+realPath);
 			String filepath=realPath + relativePath;
 			logger.debug("filepath:"+filepath);
