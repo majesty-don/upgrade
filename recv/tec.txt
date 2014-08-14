@@ -1,0 +1,262 @@
+爱情和婚姻都不是平庸生活的避难所，它们就是平庸生活的一部分。
+
+错的时间遇到对的人，叫青春
+对的时间遇到对的人，叫爱情
+错的时间遇到错的人，叫婚姻
+
+圣天子百灵相助，大将军八面威风
+
+时间比钱还不经花
+Time is easier to spend than money
+
+欲望伤身，爱情伤心，女人要的是爱，男人要的是欲。
+
+
+克拉蒂尼、卡地亚、施华洛世奇
+
+Maven安装本地JAR包
+mvn install:install-file -Dfile=jar包的位置 -DgroupId=jar包的groupId -DartifactId=jar包的artifactId -Dversion=jar包的version -Dpackaging=jar
+mvn install:install-file -Dfile=D:\mvn\spring-context-support-3.1.0.RELEASE.jar -DgroupId=org.springframework -DartifactId=spring-context-support -Dversion=3.1.0.RELEASE -Dpackaging=jar
+
+C盘Temp文件夹无限生成uigesture开头的html文件,这些文件是由于使用离线Netbeans生成的，建议在cmd中删除，
+del /s /f uigesture*
+
+powercfg -h off 删除win7休眠文件
+
+
+查找当前目录下大于50MB的文件
+$ find . -type f -size +50000k -exec ls -lh {} \; | awk ‘{ print $9 “: ” $5 }’
+
+当前目录的大小：
+
+du -sh .
+
+ 
+
+当前目录下个文件或目录的大小：
+
+du -sh *
+
+ 
+
+显示前10个占用空间最大的文件或目录：
+
+du -s * | sort -nr | head 
+
+NLS_TIMESTAMP_FORMAT
+YYYY-MM-DD HH24:MI:SS  新建环境变量，以此来更改Oracle数据库的时间格式显示的问题
+
+getconf LONG_BIT 获取机器的位数
+
+netstat -anp 显示系统端口使用情况
+
+lsof -i :端口  显示占用该端口的进程情况 
+
+lsof -p pid |wc -l 查看某个进程打开的文件数
+
+
+lsof |wc -l   查看所有进程的文件打开数
+
+uname -a 内核信息
+
+ulimit -s 可以查看默认的线程栈大小
+
+netstat -an | grep ESTABLISHED | wc -l  查看apache当前并发访问数
+
+ps aux|grep httpd|wc -l  查看有多少个进程数
+
+cat /proc/interrupts 显示中断信息
+
+sudo cp [-rf -a]  filename path 复制文件
+
+rm [-rf] file_name 删除文件
+
+tar -xzvf filename.tar.gz 解压文件，扩展名为 tar.gz
+
+tar xvjf filename.tar.bz2 
+
+touch file_name.log  创建文件
+
+chmod 777 file_name.log 更改文件权限
+
+rm -f file_name.txt 强制删除文件
+
+rm -rf /file/* 强制删除文件夹下的所有文件
+
+gcc -o execute_file_name file_name.c 编译file_name.c文件
+
+./execute_file_name 执行编译后的文件
+
+auto-apt search headerfile.h 搜索头文件
+
+ulimmit -n 查看Linux下默认的文件连接数
+
+ls -l 查看最后修改时间
+
+sudo apt-get install build-essential  安装gcc
+
+确认ssh-server是否启动了：ps -e |grep ssh
+
+ssh-server配置文件位于 /etc/ssh/sshd_config，在这里可以定义SSH的服务端口，默认端口是22，可以定义成其他端口号，如222。然后重启SSH服务：sudo /etc/init.d/ssh resar
+
+
+1.设置IP（设置网卡eth0的IP地址和子网掩码）
+sudo ifconfig eth0 192.168.20.88 netmask 255.255.255.0 up
+2.设置网关
+sudo route add default gw 192.168.20.254
+4.配置DNS服务器
+sudo vi /etc/resolv.conf
+nameserver 202.99.96.98
+5.配置主机名称(可以不该)
+sudo /bin/hostname <主机名>
+6.重启网络服务（若不行，请重启ubuntu：sudo reboot）或者重启网卡：
+sudo /etc/init.d/networking restart
+重启网卡：
+sudo ifconfig eth0 down 
+sudo ifconfig eth0 up
+查看当前IP：
+ifconfig
+
+
+
+查看/proc/uptime文件计算系统启动时间
+cat /proc/uptime
+输出: 5113396.94 575949.85
+第一数字即是系统已运行的时间5113396.94 秒，运用系统工具date即可算出系统启动时间
+date -d "$(awk -F. '{print $1}' /proc/uptime) second ago" +"%Y-%m-%d %H:%M:%S"
+
+
+
+配置Java环境变量
+3、配置环境变量
+vi /etc/profile
+export JAVA_HOME=/tcpsgps/jdk1.7.0_07
+export PATH=$JAVA_HOME/bin:$JAVA_HOME/jre/bin:$PATH 
+export CLASSPATH=.:$JAVA_HOME/lib:$JAVA_HOME/jre/lib:$CLASSPATH
+
+使新的配置文件生效
+source /etc/profile
+
+4、更改系统中的java为自己的java
+
+sudo update-alternatives --install /usr/bin/java java /tcpsgps/jdk1.7.0_40/bin/java 300
+sudo update-alternatives --install /usr/bin/javac javac /tcpsgps/jdk1.7.0_40/bin/javac 300
+sudo update-alternatives --config java 
+sudo update-alternatives --config javac
+
+5、查看java版本
+java -version
+
+
+kill -s 9 1827
+
+其中-s 9 制定了传递给进程的信号是９，即强制、尽快终止进程。1827则是查到的进程ID。
+
+很多时候我们对应用程序的排错需要查看日志文件，然而日志中通常有许多我们以前的应用程序产生的日志，其他的日志过多的时候，有时候看起当前应用程序产生的日志的时候有点费力，这时候我们可能想通过清除先前的日志，使得当前产生的日志看起来清晰： 
+
+vi test.log 
+
+:0,$d 
+:wq 
+
+
+注释： :0,$d是删除第0行到最后一行的意思；:wq是保存并退出的意思。 
+
+
+文件数：
+
+　　vi /etc/security/limits.conf
+
+　　#添加如下的行
+
+　　*  soft nofile 2048
+
+　　*  hard nofile 2048
+
+
+
+监控连接
+http://60.29.18.100:10014/monitor/
+
+天津超算
+tongka
+tongka_1122y177
+https://vpn.nscc-tj.cn/svpn/domain1/www/login/index.htm
+
+
+从页面IP进入网关IP的命令方式
+ssh  -o StrictHostKeyChecking=no IP_网关
+
+
+设置系统时间的命令
+1》先设置日期
+date -s 20140419
+2》设置时间
+date -s 10:30
++++++++++++++++++++++++++++++
+如果要同时更改BIOS时间
+再执行
+clock -w
+
+
+
+这是转发服务器需要用的权限，及表，及过程
+grant create session, create view to gjgps_sharebus
+grant select on gjgps.ext_bus_current_state to gjgps_sharebus;
+grant select on gjgps.vw_lowline_map  to gjgps_sharebus;
+grant select on gjgps.base_busstop_view to gjgps_sharebus;
+grant select on gjgps.base_line_busstop to gjgps_sharebus;
+grant select on gjgps.base_line  to gjgps_sharebus;
+grant execute on gjgps.pro_get_line_first_last_plan to gjgps_sharebus;
+grant select on gjgps.ext_line_current_state to gjgps_sharebus;
+grant select on gjgps.ext_line_current_state_his to gjgps_sharebus;
+grant select on gjgps.uqip_line to gjgps_sharebus;
+
+
+hadoop
+
+http://localhost:50030/    - Hadoop 管理介面
+http://localhost:50060/    - Hadoop Task Tracker 状态
+http://localhost:50070/    - Hadoop DFS 状态
+
+
+ACK_CODE : 0(正确)、1(车辆不在线)、2(校验错误)、3(非法命令)、4(通信失败)、5(禁止进行配套指令的下一步)、6(数据不完整、要补传) 、7(数据完整但数据总校验错误)、8(其它错误)
+
+
+在Eclipse中对ANT_HOME进行添加
+在 run ——build.xml->配置-》jre-》第一个选项选中
+
+export HADOOP_HOME=/cygdrive/d/cygwin/usr/hadoop-2.2.0
+export PATH=$HADOOP_HOME/bin:$PATH
+export CLASSPATH=.:$HADOOP_HOME/lib:$CLASSPATH
+
+export JAVA_HOME=/cygdrive/d/Java/jdk1.7.0_25
+export PATH=$JAVA_HOME/bin:$JAVA_HOME/jre/bin:$PATH 
+export CLASSPATH=.:$JAVA_HOME/lib:$JAVA_HOME/jre/lib:$CLASSPATH
+
+
+/cygdrive/d/Java/jdk1.7.0_25/bin:/cygdrive/d/Java/jdk1.7.0_25/jre/bin:/cygdrive/d/cygwin/usr/hadoop-2.2.0/bin
+
+hive和hbase的区别
+
+1、hive是sql语言，通过数据库的方式来操作hdfs文件系统，为了简化编程，底层计算方式为mapreduce。
+
+2、hive是面向行存储的数据库。
+
+3、Hive本身不存储和计算数据，它完全依赖于HDFS和MapReduce，Hive中的表纯逻辑。
+
+4、HBase为查询而生的，它通过组织起节点內所有机器的內存，提供一個超大的內存Hash表
+
+5、hbase不是关系型数据库，而是一个在hdfs上开发的面向列的分布式数据库，不支持sql。
+
+6、hbase是物理表，不是逻辑表，提供一个超大的内存hash表，搜索引擎通过它来存储索引，方便查询操作。
+
+7、hbase是列存储。
+
+
+
+
+cmd
+dir/a X:(X：表示盘符)
+attrib -h -r -a -s X:\隐藏的文件夹
+
